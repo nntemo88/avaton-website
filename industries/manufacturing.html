@@ -654,8 +654,165 @@
             color: var(--white);
         }
 
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 44px;
+            height: 44px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .mobile-menu-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--white);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .mobile-menu-toggle span::before,
+        .mobile-menu-toggle span::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 2px;
+            background: var(--white);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            left: 0;
+        }
+
+        .mobile-menu-toggle span::before { top: -8px; }
+        .mobile-menu-toggle span::after { top: 8px; }
+
+        .mobile-menu-toggle.active span { background: transparent; }
+        .mobile-menu-toggle.active span::before { top: 0; transform: rotate(45deg); }
+        .mobile-menu-toggle.active span::after { top: 0; transform: rotate(-45deg); }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            z-index: 999;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+            padding: 6rem 2rem 2rem;
+        }
+
+        .mobile-menu.active { right: 0; }
+
+        .mobile-menu-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-menu-links > li { border-bottom: 1px solid var(--dark-gray); }
+
+        .mobile-menu-links > li > a {
+            display: block;
+            padding: 1.25rem 0;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .mobile-menu-links > li > a:hover { color: #5BA3F0; }
+
+        .mobile-menu-links > li > a.mobile-dropdown-toggle {
+            display: flex !important;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .mobile-dropdown-toggle::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid var(--light-gray);
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 1rem;
+        }
+
+        .mobile-dropdown.active .mobile-dropdown-toggle::after { transform: rotate(180deg); }
+
+        .mobile-dropdown-menu {
+            display: none;
+            padding: 0.5rem 0 1rem 1rem;
+        }
+
+        .mobile-dropdown.active .mobile-dropdown-menu { display: block; }
+
+        .mobile-dropdown-menu a {
+            display: block;
+            padding: 0.75rem 0;
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .mobile-dropdown-menu a:hover { color: #5BA3F0; }
+
+        .mobile-dropdown-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--white);
+            margin: 1.25rem 0 0.5rem;
+            font-weight: 700;
+        }
+
+        .mobile-menu-cta {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--dark-gray);
+        }
+
+        .mobile-menu-cta .btn-primary {
+            width: 100%;
+            text-align: center;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
+            .mobile-menu-toggle { display: flex; }
+            .cta-nav { display: none; }
+
             .nav-links {
                 display: none;
             }
@@ -681,6 +838,21 @@
 
             .hero {
                 padding-top: 8rem;
+            }
+
+            /* Darker overlay on mobile for better text readability */
+            .hero::before {
+                background: linear-gradient(
+                    180deg,
+                    rgba(0, 0, 0, 0.85) 0%,
+                    rgba(0, 0, 0, 0.7) 40%,
+                    rgba(0, 0, 0, 0.5) 70%,
+                    rgba(0, 0, 0, 0.4) 100%
+                );
+            }
+
+            .hero .container {
+                padding: 0 2rem;
             }
 
             .footer-content {
@@ -740,9 +912,44 @@
                     <li><a href="../index.html#contact">Contact</a></li>
                 </ul>
                 <button class="cta-nav" onclick="window.location.href='../index.html#contact'">Get Started</button>
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                    <span></span>
+                </button>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-menu-links">
+            <li class="mobile-dropdown" id="mobileSolutionsDropdown">
+                <a href="javascript:void(0)" class="mobile-dropdown-toggle" onclick="toggleMobileDropdown('mobileSolutionsDropdown')">Solutions</a>
+                <div class="mobile-dropdown-menu">
+                    <div class="mobile-dropdown-label">What We Do</div>
+                    <a href="../solutions/agentic-enterprise-transformation.html" onclick="closeMobileMenu()">Agentic Enterprise Transformation</a>
+                    <a href="../solutions/pre-built-ai-agents.html" onclick="closeMobileMenu()">Pre-Built AI Agents</a>
+                    <a href="../solutions/ai-operations-governance.html" onclick="closeMobileMenu()">AI Operations & Governance</a>
+                    <a href="../solutions/data-modernization.html" onclick="closeMobileMenu()">Data Modernization for AI</a>
+                    <div class="mobile-dropdown-label">Industries</div>
+                    <a href="financial-services.html" onclick="closeMobileMenu()">Financial Services</a>
+                    <a href="manufacturing.html" onclick="closeMobileMenu()">Manufacturing</a>
+                    <a href="retail.html" onclick="closeMobileMenu()">Retail & CPG</a>
+                    <a href="logistics.html" onclick="closeMobileMenu()">Logistics & Transportation</a>
+                </div>
+            </li>
+            <li><a href="../approach/index.html" onclick="closeMobileMenu()">Approach</a></li>
+            <li><a href="../index.html#case-studies" onclick="closeMobileMenu()">Case Studies</a></li>
+            <li><a href="../index.html#insights" onclick="closeMobileMenu()">Insights</a></li>
+            <li><a href="../index.html#about" onclick="closeMobileMenu()">About</a></li>
+        </ul>
+        <div class="mobile-menu-cta">
+            <a href="../index.html#contact" class="btn-primary" onclick="closeMobileMenu()">Get Started</a>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -1078,6 +1285,44 @@
         }
 
         render();
+
+        // ================================================
+        // Mobile Menu
+        // ================================================
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+
+        if (mobileMenuToggle && mobileMenu && mobileMenuOverlay) {
+            mobileMenuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+                mobileMenuOverlay.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            });
+
+            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+        }
+
+        function closeMobileMenu() {
+            if (mobileMenuToggle) mobileMenuToggle.classList.remove('active');
+            if (mobileMenu) mobileMenu.classList.remove('active');
+            if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function toggleMobileDropdown(id) {
+            const dropdown = document.getElementById(id);
+            if (dropdown) {
+                dropdown.classList.toggle('active');
+            }
+        }
     </script>
 </body>
 </html>

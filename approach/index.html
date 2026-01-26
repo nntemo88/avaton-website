@@ -432,9 +432,44 @@
                     <li><a href="../index.html#contact">Contact</a></li>
                 </ul>
                 <button class="cta-nav" onclick="window.location.href='../index.html#contact'">Get Started</button>
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                    <span></span>
+                </button>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-menu-links">
+            <li class="mobile-dropdown" id="mobileSolutionsDropdown">
+                <a href="javascript:void(0)" class="mobile-dropdown-toggle" onclick="toggleMobileDropdown('mobileSolutionsDropdown')">Solutions</a>
+                <div class="mobile-dropdown-menu">
+                    <div class="mobile-dropdown-label">What We Do</div>
+                    <a href="../solutions/agentic-enterprise-transformation.html" onclick="closeMobileMenu()">Agentic Enterprise Transformation</a>
+                    <a href="../solutions/pre-built-ai-agents.html" onclick="closeMobileMenu()">Pre-Built AI Agents</a>
+                    <a href="../solutions/ai-operations-governance.html" onclick="closeMobileMenu()">AI Operations & Governance</a>
+                    <a href="../solutions/data-modernization.html" onclick="closeMobileMenu()">Data Modernization for AI</a>
+                    <div class="mobile-dropdown-label">Industries</div>
+                    <a href="../industries/financial-services.html" onclick="closeMobileMenu()">Financial Services</a>
+                    <a href="../industries/manufacturing.html" onclick="closeMobileMenu()">Manufacturing</a>
+                    <a href="../industries/retail.html" onclick="closeMobileMenu()">Retail & CPG</a>
+                    <a href="../industries/logistics.html" onclick="closeMobileMenu()">Logistics & Transportation</a>
+                </div>
+            </li>
+            <li><a href="../approach/index.html" onclick="closeMobileMenu()">Approach</a></li>
+            <li><a href="../index.html#case-studies" onclick="closeMobileMenu()">Case Studies</a></li>
+            <li><a href="../index.html#insights" onclick="closeMobileMenu()">Insights</a></li>
+            <li><a href="../index.html#about" onclick="closeMobileMenu()">About</a></li>
+        </ul>
+        <div class="mobile-menu-cta">
+            <a href="../index.html#contact" class="btn-primary" onclick="closeMobileMenu()">Get Started</a>
+        </div>
+    </div>
 
     <div class="progress-dots">
         <div class="progress-dot active" data-section="0" data-label="Intro"></div>

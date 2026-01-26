@@ -613,9 +613,44 @@
                     <li><a href="#contact">Contact</a></li>
                 </ul>
                 <button class="cta-nav" onclick="window.location.href='#contact'">Get Started</button>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+                    <span></span>
+                </button>
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-menu-links">
+            <li class="mobile-dropdown" id="mobileSolutionsDropdown">
+                <a href="javascript:void(0)" class="mobile-dropdown-toggle" onclick="toggleMobileDropdown('mobileSolutionsDropdown')">Solutions</a>
+                <div class="mobile-dropdown-menu">
+                    <div class="mobile-dropdown-label">What We Do</div>
+                    <a href="solutions/agentic-enterprise-transformation.html">Agentic Enterprise Transformation</a>
+                    <a href="solutions/pre-built-ai-agents.html">Pre-Built AI Agents</a>
+                    <a href="solutions/ai-operations-governance.html">AI Operations & Governance</a>
+                    <a href="solutions/data-modernization.html">Data Modernization for AI</a>
+                    <div class="mobile-dropdown-label">Industries</div>
+                    <a href="industries/financial-services.html">Financial Services</a>
+                    <a href="industries/manufacturing.html">Manufacturing</a>
+                    <a href="industries/retail.html">Retail & CPG</a>
+                    <a href="industries/logistics.html">Logistics & Transportation</a>
+                </div>
+            </li>
+            <li><a href="approach/index.html">Approach</a></li>
+            <li><a href="#case-studies" onclick="closeMobileMenu()">Case Studies</a></li>
+            <li><a href="#insights" onclick="closeMobileMenu()">Insights</a></li>
+            <li><a href="#about" onclick="closeMobileMenu()">About</a></li>
+            <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
+        </ul>
+        <div class="mobile-menu-cta">
+            <a href="#contact" class="btn-primary" onclick="closeMobileMenu()">Get Started</a>
+        </div>
+    </div>
 
     <!-- Full-page ambient gradient background -->
     <canvas class="ambient-canvas" id="ambientCanvas"></canvas>
@@ -900,12 +935,12 @@
                 </div>
 
                 <div class="footer-column">
-                    <h4>Company</h4>
+                    <h4>Industries</h4>
                     <ul>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#case-studies">Case Studies</a></li>
-                        <li><a href="#insights">Insights</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="industries/financial-services.html">Financial Services</a></li>
+                        <li><a href="industries/manufacturing.html">Manufacturing</a></li>
+                        <li><a href="industries/retail.html">Retail & CPG</a></li>
+                        <li><a href="industries/logistics.html">Logistics</a></li>
                     </ul>
                 </div>
 
