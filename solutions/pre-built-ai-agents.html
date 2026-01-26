@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pre-Built AI Agents | AVATON</title>
+    <meta name="description" content="Production-ready agents deployed in weeks. Pre-built for customer service, document processing, back-office operations, and analytics.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-card: #0d0d0d;
+            --border-primary: #1a1a1a;
+            --border-secondary: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --accent: #5BA3F0;
+            --accent-dim: rgba(91, 163, 240, 0.1);
+            --accent-border: rgba(91, 163, 240, 0.25);
+            --gradient: linear-gradient(135deg, #7BB8FF 0%, #5BA3F0 50%, #4A8FDB 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Full-page ambient gradient canvas */
+        .ambient-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-primary);
+            padding: 1.25rem 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        /* Dropdown Menu - Click-based Two Column */
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-dropdown > a {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+        }
+
+        .nav-dropdown > a::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid var(--text-secondary);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .nav-dropdown.active > a::after {
+            border-top-color: var(--text-primary);
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown > a:hover::after {
+            border-top-color: var(--text-primary);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 560px;
+            background: rgba(10, 10, 10, 0.98);
+            border: 1px solid var(--border-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            margin-top: 0.75rem;
+            pointer-events: auto;
+        }
+
+        .dropdown-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .dropdown-column h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            padding: 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.65rem 0.75rem;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(91, 163, 240, 0.1);
+            color: var(--text-primary);
+        }
+
+        .dropdown-footer {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .dropdown-footer a {
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-align: center;
+            display: block;
+        }
+
+        .dropdown-footer a:hover {
+            color: var(--text-primary);
+            background: transparent;
+        }
+
+        .dropdown-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: none;
+        }
+
+        .dropdown-overlay.active {
+            display: block;
+        }
+
+        .nav-cta {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            padding: 8rem 3rem 0;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--text-primary);
+        }
+
+        .breadcrumb span {
+            color: var(--text-muted);
+            margin: 0 0.5rem;
+        }
+
+        .breadcrumb-current {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 3rem 6rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 550px;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-border);
+            border-radius: 50px;
+        }
+
+        .hero-label::before {
+            content: '✦';
+            font-size: 0.7rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--gradient);
+            color: var(--bg-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(91, 163, 240, 0.3);
+        }
+
+        .btn-primary::after {
+            content: '→';
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover::after {
+            transform: translateX(4px);
+        }
+
+        .hero-visual {
+            background: var(--bg-card);
+            border: 1px solid var(--border-secondary);
+            border-radius: 20px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-visual::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 21px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(91, 163, 240, 0.3), transparent, rgba(91, 163, 240, 0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .hero-visual-placeholder {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-dark {
+            background: rgba(10, 10, 10, 0.7);
+            max-width: none;
+            border-top: 1px solid var(--border-primary);
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .section-dark .section-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-border);
+            border-radius: 50px;
+        }
+
+        .section-label::before {
+            content: '✦';
+            font-size: 0.7rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            max-width: 800px;
+        }
+
+        /* Problem Section */
+        .problem-section .section-title {
+            max-width: 700px;
+        }
+
+        /* Agents Grid */
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-secondary);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .agent-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 21px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(91, 163, 240, 0.4), transparent, rgba(91, 163, 240, 0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .agent-card:hover::before {
+            opacity: 1;
+        }
+
+        .agent-card:hover {
+            border-color: transparent;
+            transform: translateY(-4px);
+        }
+
+        .agent-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .agent-icon {
+            width: 52px;
+            height: 52px;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+
+        .agent-icon svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        .agent-badge {
+            font-size: 0.7rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0.35rem 0.75rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-border);
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .agent-card h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+        }
+
+        .agent-problem {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .agent-capabilities-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .agent-capabilities {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .agent-capabilities li {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            padding: 0.4rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+
+        .agent-capabilities li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.7rem;
+            width: 5px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .agent-result {
+            background: rgba(91, 163, 240, 0.08);
+            border: 1px solid var(--accent-border);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+        }
+
+        .agent-result-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.25rem;
+        }
+
+        .agent-result-value {
+            font-size: 1rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Outcome Section */
+        .outcome-section {
+            text-align: center;
+        }
+
+        .outcome-list {
+            list-style: none;
+            max-width: 700px;
+            margin: 3rem auto 0;
+            text-align: left;
+        }
+
+        .outcome-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--border-primary);
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .outcome-list li:last-child {
+            border-bottom: none;
+        }
+
+        .outcome-list li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 8rem 3rem;
+            background: rgba(10, 10, 10, 0.7);
+            max-width: none;
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 4rem 3rem;
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-brand {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-legal a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .footer-legal a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1000px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .hero-visual {
+                height: 300px;
+            }
+
+            .agents-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.25rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding: 3rem 1.5rem 4rem;
+            }
+
+            section {
+                padding: 4rem 1.5rem;
+            }
+
+            .agent-card {
+                padding: 1.75rem;
+            }
+
+            .footer-content,
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Full-page ambient gradient background -->
+    <canvas class="ambient-canvas" id="ambientCanvas"></canvas>
+
+    <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">AVATON</a>
+            <ul class="nav-links">
+                <li class="nav-dropdown" id="solutionsDropdown">
+                    <a href="javascript:void(0)" onclick="toggleDropdown(event)">Solutions</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-columns">
+                            <div class="dropdown-column">
+                                <h4>What We Do</h4>
+                                <a href="agentic-enterprise-transformation.html">Agentic Enterprise Transformation</a>
+                                <a href="pre-built-ai-agents.html">Pre-Built AI Agents</a>
+                                <a href="ai-operations-governance.html">AI Operations & Governance</a>
+                                <a href="data-modernization.html">Data Modernization for AI</a>
+                            </div>
+                            <div class="dropdown-column">
+                                <h4>Industries</h4>
+                                <a href="../industries/financial-services.html">Financial Services</a>
+                                <a href="../industries/manufacturing.html">Manufacturing</a>
+                                <a href="../industries/retail.html">Retail & CPG</a>
+                                <a href="../industries/logistics.html">Logistics & Transportation</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="../approach/index.html">Approach</a></li>
+                <li><a href="../index.html#case-studies">Case Studies</a></li>
+                <li><a href="../index.html#insights">Insights</a></li>
+                <li><a href="../index.html#about">About</a></li>
+            </ul>
+            <a href="../index.html#contact" class="nav-cta">Get Started</a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="../solutions/">Solutions</a>
+        <span>/</span>
+        <span class="breadcrumb-current">Pre-Built AI Agents</span>
+    </div>
+
+    <!-- SECTION 1: HERO -->
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-label">AI Agents</span>
+            <h1>Production-Ready Agents. Deployed in Weeks.</h1>
+            <p>Pre-built, production-tested agents for high-value enterprise workflows—customized to your systems, your processes, and your compliance requirements.</p>
+            <a href="#agents" class="btn-primary">Explore Our Agents</a>
+        </div>
+        <div class="hero-visual">
+            <span class="hero-visual-placeholder">Visual placeholder</span>
+        </div>
+    </section>
+
+    <!-- SECTION 2: THE PROBLEM -->
+    <section class="problem-section section-dark">
+        <div class="section-inner">
+            <span class="section-label">The Challenge</span>
+            <h2 class="section-title">Building agents from scratch takes too long</h2>
+            <p class="section-description">Building agents from scratch requires ML engineers you can't hire, months you don't have, and expertise in production deployment your team lacks. Meanwhile, generic chatbots don't handle the complex, multi-step workflows where real value lives. You need something between "build everything" and "buy a toy."</p>
+        </div>
+    </section>
+
+    <!-- SECTION 3: WHAT WE DELIVER -->
+    <section class="agents-section" id="agents">
+        <span class="section-label">Our Agents</span>
+        <h2 class="section-title">Four production-ready agents for enterprise workflows</h2>
+        <p class="section-description">Each agent is pre-built and production-tested, then customized to your specific systems, processes, and compliance requirements.</p>
+
+        <div class="agents-grid">
+            <!-- Agent 1: Customer Service -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                    </div>
+                    <span class="agent-badge">Agent 01</span>
+                </div>
+                <h3>Customer Service Agent</h3>
+                <p class="agent-problem">Customer inquiries require human agents for even routine questions, creating backlogs and inconsistent responses.</p>
+                <div class="agent-capabilities-title">Capabilities</div>
+                <ul class="agent-capabilities">
+                    <li>Multi-channel support (email, chat, voice)</li>
+                    <li>Full integration with CRM and knowledge base</li>
+                    <li>Escalation handling with context handoff</li>
+                    <li>Multi-language support (German, English, +others)</li>
+                </ul>
+                <div class="agent-result">
+                    <div class="agent-result-label">Typical Result</div>
+                    <div class="agent-result-value">65% of inquiries resolved without human intervention</div>
+                </div>
+            </div>
+
+            <!-- Agent 2: Document Processing -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <span class="agent-badge">Agent 02</span>
+                </div>
+                <h3>Document Processing Agent</h3>
+                <p class="agent-problem">Contract review, invoice processing, and compliance documentation consume hundreds of hours monthly.</p>
+                <div class="agent-capabilities-title">Capabilities</div>
+                <ul class="agent-capabilities">
+                    <li>Intelligent document classification and routing</li>
+                    <li>Data extraction with validation</li>
+                    <li>Compliance checking and flagging</li>
+                    <li>Integration with DMS and ERP systems</li>
+                </ul>
+                <div class="agent-result">
+                    <div class="agent-result-label">Typical Result</div>
+                    <div class="agent-result-value">80% reduction in document processing time</div>
+                </div>
+            </div>
+
+            <!-- Agent 3: Back-Office Operations -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                        </svg>
+                    </div>
+                    <span class="agent-badge">Agent 03</span>
+                </div>
+                <h3>Back-Office Operations Agent</h3>
+                <p class="agent-problem">Manual data entry, system reconciliation, and administrative workflows create bottlenecks and errors.</p>
+                <div class="agent-capabilities-title">Capabilities</div>
+                <ul class="agent-capabilities">
+                    <li>Cross-system data synchronization</li>
+                    <li>Exception detection and routing</li>
+                    <li>Automated reporting and audit trails</li>
+                    <li>Workflow orchestration across departments</li>
+                </ul>
+                <div class="agent-result">
+                    <div class="agent-result-label">Typical Result</div>
+                    <div class="agent-result-value">70% of routine back-office tasks fully automated</div>
+                </div>
+            </div>
+
+            <!-- Agent 4: Analytics -->
+            <div class="agent-card">
+                <div class="agent-header">
+                    <div class="agent-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <span class="agent-badge">Agent 04</span>
+                </div>
+                <h3>Analytics Agent</h3>
+                <p class="agent-problem">Business users wait days for reports while analysts manually compile data from multiple sources.</p>
+                <div class="agent-capabilities-title">Capabilities</div>
+                <ul class="agent-capabilities">
+                    <li>Natural language queries against business data</li>
+                    <li>Automated report generation and distribution</li>
+                    <li>Anomaly detection and alerting</li>
+                    <li>Self-service analytics for non-technical users</li>
+                </ul>
+                <div class="agent-result">
+                    <div class="agent-result-label">Typical Result</div>
+                    <div class="agent-result-value">Insights delivered in minutes instead of days</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: THE OUTCOME -->
+    <section class="outcome-section section-dark">
+        <div class="section-inner">
+            <span class="section-label">What You Get</span>
+            <h2 class="section-title">Agents that work from day one</h2>
+            <ul class="outcome-list">
+                <li>Production-grade agents running in weeks, not months</li>
+                <li>Full integration with your existing systems</li>
+                <li>Your team trained to manage and improve them</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- SECTION 6: CTA -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Which agent fits your needs?</h2>
+            <p>We'll help you identify the highest-impact starting point.</p>
+            <a href="../index.html#contact" class="btn-primary">Discuss Your Requirements</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">AVATON</div>
+            <ul class="footer-links">
+                <li><a href="../solutions/">Solutions</a></li>
+                <li><a href="../approach/index.html">Approach</a></li>
+                <li><a href="../index.html#case-studies">Case Studies</a></li>
+                <li><a href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 AVATON. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Impressum</a>
+                <a href="#">Cookie Settings</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDropdown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const dropdown = document.getElementById('solutionsDropdown');
+            const overlay = document.getElementById('dropdownOverlay');
+
+            if (dropdown.classList.contains('active')) {
+                closeDropdown();
+            } else {
+                dropdown.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeDropdown() {
+            const dropdown = document.getElementById('solutionsDropdown');
+            const overlay = document.getElementById('dropdownOverlay');
+            dropdown.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        document.getElementById('dropdownOverlay').addEventListener('click', closeDropdown);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        });
+
+        // ================================================
+        // Ambient Caustic Light Effect
+        // ================================================
+        const canvas = document.getElementById('ambientCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function noise(x, y, t) {
+            const n1 = Math.sin(x * 0.01 + t * 0.0003) * Math.cos(y * 0.012 + t * 0.0002);
+            const n2 = Math.sin(x * 0.008 - t * 0.0002) * Math.cos(y * 0.009 + t * 0.00025);
+            const n3 = Math.sin((x + y) * 0.006 + t * 0.00015);
+            return (n1 + n2 + n3) / 3;
+        }
+
+        const lights = [
+            { x: 0.3, y: 0.25, intensity: 0.55, radius: 0.5, speedX: 0.00002, speedY: 0.000015, phase: 0 },
+            { x: 0.7, y: 0.35, intensity: 0.4, radius: 0.4, speedX: -0.000015, speedY: 0.00002, phase: 2 },
+            { x: 0.5, y: 0.6, intensity: 0.3, radius: 0.45, speedX: 0.000018, speedY: -0.000012, phase: 4 }
+        ];
+
+        let time = 0;
+
+        function render() {
+            time++;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, width, height);
+
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+            const step = 3;
+
+            for (let y = 0; y < height; y += step) {
+                for (let x = 0; x < width; x += step) {
+                    let totalLight = 0;
+
+                    for (const light of lights) {
+                        const noiseVal = noise(x, y, time + light.phase * 1000);
+                        const lightX = (light.x + Math.sin(time * light.speedX * 50 + light.phase) * 0.15 + noiseVal * 0.05) * width;
+                        const lightY = (light.y + Math.cos(time * light.speedY * 50 + light.phase) * 0.1 + noiseVal * 0.03) * height;
+
+                        const dx = x - lightX;
+                        const dy = y - lightY;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = light.radius * Math.max(width, height);
+
+                        if (dist < maxDist) {
+                            const falloff = 1 - (dist / maxDist);
+                            const caustic = 1 + noise(x * 2, y * 2, time * 0.5) * 0.4;
+                            totalLight += falloff * falloff * light.intensity * caustic;
+                        }
+                    }
+
+                    totalLight = Math.min(totalLight, 1);
+                    const r = Math.floor(totalLight * 45);
+                    const g = Math.floor(totalLight * 85);
+                    const b = Math.floor(totalLight * 140);
+
+                    for (let sy = 0; sy < step && y + sy < height; sy++) {
+                        for (let sx = 0; sx < step && x + sx < width; sx++) {
+                            const idx = ((y + sy) * width + (x + sx)) * 4;
+                            data[idx] = r;
+                            data[idx + 1] = g;
+                            data[idx + 2] = b;
+                            data[idx + 3] = 255;
+                        }
+                    }
+                }
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+            ctx.filter = 'blur(40px)';
+            ctx.drawImage(canvas, 0, 0);
+            ctx.filter = 'none';
+
+            requestAnimationFrame(render);
+        }
+
+        render();
+    </script>
+</body>
+</html>

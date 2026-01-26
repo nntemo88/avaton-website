@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Approach | AVATON - Agentic AI Solutions</title>
+    <meta name="description" content="A proven five-phase framework that takes you from strategy to production in 12 weeks. See how AVATON builds your Agentic Enterprise.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Full-page ambient gradient canvas */
+        .ambient-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Approach page specific styles */
+        html {
+            scroll-snap-type: y mandatory;
+        }
+
+        /* Progress Dots */
+        .progress-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--dark-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .progress-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+            color: var(--mid-gray);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .progress-dot:hover::after {
+            opacity: 1;
+        }
+
+        .progress-dot.active {
+            background: var(--accent);
+            transform: scale(1.3);
+        }
+
+        /* Full Page Sections */
+        .section {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 5rem 3rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            background: radial-gradient(ellipse at center, rgba(91, 163, 240, 0.08) 0%, transparent 70%);
+        }
+
+        .hero-section .hero-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .page-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: rgba(91, 163, 240, 0.1);
+            border: 1px solid rgba(91, 163, 240, 0.25);
+            border-radius: 50px;
+        }
+
+        .page-label::before {
+            content: '✦';
+            font-size: 0.7rem;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.25rem;
+            color: var(--light-gray);
+            line-height: 1.7;
+            margin-bottom: 3rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--mid-gray);
+            font-size: 0.8rem;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Phase Sections */
+        .phase-section {
+            padding: 0;
+        }
+
+        .phase-container {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .phase-section:nth-child(odd) .phase-container {
+            direction: rtl;
+        }
+
+        .phase-section:nth-child(odd) .phase-container > * {
+            direction: ltr;
+        }
+
+        .phase-content {
+            max-width: 550px;
+        }
+
+        .phase-number {
+            font-size: 8rem;
+            font-weight: 800;
+            background: var(--metallic-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 0.85;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .phase-content h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+
+        .phase-duration {
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        .phase-content p {
+            color: var(--light-gray);
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .phase-content ul {
+            list-style: none;
+        }
+
+        .phase-content li {
+            color: var(--light-gray);
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .phase-content li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        /* Visual Side */
+        .phase-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .visual-card {
+            background: var(--off-black);
+            border: 1px solid var(--dark-gray);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .visual-card:hover {
+            border-color: rgba(91, 163, 240, 0.25);
+            transform: translateY(-4px);
+        }
+
+        .visual-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 17px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(91, 163, 240, 0.2), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .visual-card:hover::before {
+            opacity: 1;
+        }
+
+        .visual-card-title {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .visual-card-content {
+            font-size: 1rem;
+            color: var(--white);
+            line-height: 1.5;
+        }
+
+        .visual-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .visual-stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--metallic-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .visual-stat-unit {
+            font-size: 1.25rem;
+            color: var(--light-gray);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: rgba(10, 10, 10, 0.7);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-section p {
+            color: var(--light-gray);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            html {
+                scroll-snap-type: none;
+            }
+
+            .section {
+                min-height: auto;
+                padding: 6rem 2rem;
+            }
+
+            .phase-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .phase-section:nth-child(odd) .phase-container {
+                direction: ltr;
+            }
+
+            .phase-content {
+                max-width: none;
+            }
+
+            .phase-number {
+                font-size: 5rem;
+            }
+
+            .phase-content h2 {
+                font-size: 2rem;
+            }
+
+            .progress-dots {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .phase-number {
+                font-size: 4rem;
+            }
+
+            .phase-content h2 {
+                font-size: 1.75rem;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Full-page ambient gradient background -->
+    <canvas class="ambient-canvas" id="ambientCanvas"></canvas>
+
+    <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="../index.html" class="logo">AVATON</a>
+                <ul class="nav-links">
+                    <li class="nav-dropdown" id="solutionsDropdown">
+                        <a href="javascript:void(0)" onclick="toggleDropdown(event)">Solutions</a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-columns">
+                                <div class="dropdown-column">
+                                    <h4>What We Do</h4>
+                                    <a href="../solutions/agentic-enterprise-transformation.html">Agentic Enterprise Transformation</a>
+                                    <a href="../solutions/pre-built-ai-agents.html">Pre-Built AI Agents</a>
+                                    <a href="../solutions/ai-operations-governance.html">AI Operations & Governance</a>
+                                    <a href="../solutions/data-modernization.html">Data Modernization for AI</a>
+                                </div>
+                                <div class="dropdown-column">
+                                    <h4>Industries</h4>
+                                    <a href="../industries/financial-services.html">Financial Services</a>
+                                    <a href="../industries/manufacturing.html">Manufacturing</a>
+                                    <a href="../industries/retail.html">Retail & CPG</a>
+                                    <a href="../industries/logistics.html">Logistics & Transportation</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="../approach/index.html" style="color: var(--white);">Approach</a></li>
+                    <li><a href="../index.html#case-studies">Case Studies</a></li>
+                    <li><a href="../index.html#insights">Insights</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <button class="cta-nav" onclick="window.location.href='../index.html#contact'">Get Started</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="progress-dots">
+        <div class="progress-dot active" data-section="0" data-label="Intro"></div>
+        <div class="progress-dot" data-section="1" data-label="Strategy"></div>
+        <div class="progress-dot" data-section="2" data-label="Proof of Value"></div>
+        <div class="progress-dot" data-section="3" data-label="Adoption"></div>
+        <div class="progress-dot" data-section="4" data-label="Production"></div>
+        <div class="progress-dot" data-section="5" data-label="Scale"></div>
+        <div class="progress-dot" data-section="6" data-label="Get Started"></div>
+    </div>
+
+    <!-- Hero -->
+    <section class="section hero-section" id="section-0">
+        <div class="hero-content">
+            <span class="page-label">Our Approach</span>
+            <h1>How We Build Your Agentic Enterprise</h1>
+            <p>A proven five-phase framework that takes you from strategy to production in 12 weeks—not 12 months. Scroll to explore each phase.</p>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Phase 1 -->
+    <section class="section phase-section" id="section-1">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">01</div>
+                <h2>Strategy First</h2>
+                <div class="phase-duration">Week 1-2</div>
+                <p>We start with your business goals, not with technology. Before writing a single line of code, we work with your leadership team to understand what success actually looks like.</p>
+                <ul>
+                    <li>Deep process decomposition and workflow analysis</li>
+                    <li>Prioritization based on value and feasibility</li>
+                    <li>Governance model for risk and compliance</li>
+                    <li>Business case with measurable ROI targets</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-card">
+                    <div class="visual-card-title">Timeline</div>
+                    <div class="visual-stat">
+                        <span class="visual-stat-number">2</span>
+                        <span class="visual-stat-unit">weeks</span>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-title">Key Deliverable</div>
+                    <div class="visual-card-content">Strategic roadmap aligned to your core business metrics—not a generic AI strategy document.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 2 -->
+    <section class="section phase-section" id="section-2">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">02</div>
+                <h2>Fast Proof of Value</h2>
+                <div class="phase-duration">Week 3-6</div>
+                <p>Using our library of pre-built agent frameworks and accelerators, we deliver a working proof of concept in 3-4 weeks. This is not a demo—it's a functional system running against your real data.</p>
+                <ul>
+                    <li>Pre-built frameworks for common patterns</li>
+                    <li>Integration with your actual data sources</li>
+                    <li>Measurable results you can validate</li>
+                    <li>Change management from day one</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-card">
+                    <div class="visual-card-title">Timeline</div>
+                    <div class="visual-stat">
+                        <span class="visual-stat-number">3-4</span>
+                        <span class="visual-stat-unit">weeks</span>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-title">Key Deliverable</div>
+                    <div class="visual-card-content">Working POC with real data integrations and measurable results you can validate internally.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 3 -->
+    <section class="section phase-section" id="section-3">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">03</div>
+                <h2>Change & Adoption</h2>
+                <div class="phase-duration">Ongoing</div>
+                <p>AI projects fail not because the technology doesn't work, but because people don't use it. We integrate change management into every phase—not as an afterthought.</p>
+                <ul>
+                    <li>Stakeholder communication programs</li>
+                    <li>Hands-on training for end users</li>
+                    <li>Internal AI fluency development</li>
+                    <li>Feedback loops for improvement</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-card">
+                    <div class="visual-card-title">Focus</div>
+                    <div class="visual-stat">
+                        <span class="visual-stat-number">100%</span>
+                        <span class="visual-stat-unit">adoption</span>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-title">Key Deliverable</div>
+                    <div class="visual-card-content">Genuine adoption that sticks—not just deployment, but real behavioral change across your organization.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 4 -->
+    <section class="section phase-section" id="section-4">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">04</div>
+                <h2>Production Deployment</h2>
+                <div class="phase-duration">Week 7-10</div>
+                <p>Moving from POC to production is where most AI initiatives stall. We know exactly what it takes to cross this gap with enterprise security and seamless integration.</p>
+                <ul>
+                    <li>Enterprise security controls</li>
+                    <li>DSGVO compliance and data governance</li>
+                    <li>Integration with SAP, Salesforce, core systems</li>
+                    <li>Testing, monitoring, rollback capabilities</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-card">
+                    <div class="visual-card-title">Security</div>
+                    <div class="visual-stat">
+                        <span class="visual-stat-number">100%</span>
+                        <span class="visual-stat-unit">DSGVO</span>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-title">Key Deliverable</div>
+                    <div class="visual-card-content">A production system that meets enterprise standards—not a prototype held together with workarounds.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 5 -->
+    <section class="section phase-section" id="section-5">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">05</div>
+                <h2>Operate & Scale</h2>
+                <div class="phase-duration">Week 11-12+</div>
+                <p>Deploying an AI agent is not the finish line—it's the starting point. We ensure your investment continues to deliver value over time with operational excellence.</p>
+                <ul>
+                    <li>Ongoing monitoring and optimization</li>
+                    <li>Automated drift detection</li>
+                    <li>Cost management and optimization</li>
+                    <li>Expansion playbook for new use cases</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-card">
+                    <div class="visual-card-title">Total Timeline</div>
+                    <div class="visual-stat">
+                        <span class="visual-stat-number">12</span>
+                        <span class="visual-stat-unit">weeks</span>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-title">Key Deliverable</div>
+                    <div class="visual-card-content">Full independence with a trained team, or ongoing managed operations—your choice.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-section" id="section-6">
+        <div class="cta-content">
+            <h2>Ready to start your journey?</h2>
+            <p>Book a 60-minute strategy session to map your highest-impact opportunities and outline a realistic path to production.</p>
+            <a href="../index.html#contact" class="btn-primary">Book a Strategy Session</a>
+        </div>
+    </section>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Update progress dots on scroll (page-specific)
+        const sections = document.querySelectorAll('.section');
+        const dots = document.querySelectorAll('.progress-dot');
+
+        function updateDots() {
+            let currentSection = 0;
+
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight / 2) {
+                    currentSection = index;
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSection);
+            });
+        }
+
+        window.addEventListener('scroll', updateDots);
+        updateDots();
+
+        // Click on dot to scroll to section
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionIndex = dot.dataset.section;
+                const target = document.getElementById('section-' + sectionIndex);
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // ================================================
+        // Ambient Caustic Light Effect
+        // ================================================
+        const canvas = document.getElementById('ambientCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function noise(x, y, t) {
+            const n1 = Math.sin(x * 0.01 + t * 0.0003) * Math.cos(y * 0.012 + t * 0.0002);
+            const n2 = Math.sin(x * 0.008 - t * 0.0002) * Math.cos(y * 0.009 + t * 0.00025);
+            const n3 = Math.sin((x + y) * 0.006 + t * 0.00015);
+            return (n1 + n2 + n3) / 3;
+        }
+
+        const lights = [
+            { x: 0.3, y: 0.25, intensity: 0.55, radius: 0.5, speedX: 0.00002, speedY: 0.000015, phase: 0 },
+            { x: 0.7, y: 0.35, intensity: 0.4, radius: 0.4, speedX: -0.000015, speedY: 0.00002, phase: 2 },
+            { x: 0.5, y: 0.6, intensity: 0.3, radius: 0.45, speedX: 0.000018, speedY: -0.000012, phase: 4 }
+        ];
+
+        let time = 0;
+
+        function render() {
+            time++;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, width, height);
+
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+            const step = 3;
+
+            for (let y = 0; y < height; y += step) {
+                for (let x = 0; x < width; x += step) {
+                    let totalLight = 0;
+
+                    for (const light of lights) {
+                        const noiseVal = noise(x, y, time + light.phase * 1000);
+                        const lightX = (light.x + Math.sin(time * light.speedX * 50 + light.phase) * 0.15 + noiseVal * 0.05) * width;
+                        const lightY = (light.y + Math.cos(time * light.speedY * 50 + light.phase) * 0.1 + noiseVal * 0.03) * height;
+
+                        const dx = x - lightX;
+                        const dy = y - lightY;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = light.radius * Math.max(width, height);
+
+                        if (dist < maxDist) {
+                            const falloff = 1 - (dist / maxDist);
+                            const caustic = 1 + noise(x * 2, y * 2, time * 0.5) * 0.4;
+                            totalLight += falloff * falloff * light.intensity * caustic;
+                        }
+                    }
+
+                    totalLight = Math.min(totalLight, 1);
+                    const r = Math.floor(totalLight * 45);
+                    const g = Math.floor(totalLight * 85);
+                    const b = Math.floor(totalLight * 140);
+
+                    for (let sy = 0; sy < step && y + sy < height; sy++) {
+                        for (let sx = 0; sx < step && x + sx < width; sx++) {
+                            const idx = ((y + sy) * width + (x + sx)) * 4;
+                            data[idx] = r;
+                            data[idx + 1] = g;
+                            data[idx + 2] = b;
+                            data[idx + 3] = 255;
+                        }
+                    }
+                }
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+            ctx.filter = 'blur(40px)';
+            ctx.drawImage(canvas, 0, 0);
+            ctx.filter = 'none';
+
+            requestAnimationFrame(render);
+        }
+
+        render();
+    </script>
+</body>
+</html>

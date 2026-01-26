@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Services & Insurance | AVATON - Agentic AI Solutions</title>
+    <meta name="description" content="Agentic AI solutions for Financial Services and Insurance. Automate claims processing, compliance monitoring, and customer onboarding with BaFin-compliant AI agents.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #000000;
+            --off-black: #0a0a0a;
+            --dark-gray: #1a1a1a;
+            --mid-gray: #666666;
+            --light-gray: #999999;
+            --white: #ffffff;
+            --metallic-gradient: linear-gradient(135deg, #7BB8FF 0%, #5BA3F0 35%, #4A8FDB 65%, #3A7CC7 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--black);
+            color: var(--white);
+            line-height: 1.65;
+            font-size: 16px;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Full-page ambient gradient canvas */
+        .ambient-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5rem;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 2rem 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(91, 168, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            padding: 1.25rem 0;
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            background: var(--metallic-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links > li > a::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--metallic-gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .nav-links > li > a:hover::before {
+            width: 100%;
+        }
+
+        /* Dropdown Menu */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown > a {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+        }
+
+        .nav-dropdown > a::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid var(--light-gray);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .nav-dropdown.active > a::after {
+            border-top-color: var(--white);
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown > a:hover::after {
+            border-top-color: var(--white);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 560px;
+            background: rgba(10, 10, 10, 0.98);
+            border: 1px solid var(--dark-gray);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            margin-top: 0.75rem;
+            pointer-events: auto;
+        }
+
+        .dropdown-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .dropdown-column h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--white);
+            margin-bottom: 1rem;
+            padding: 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.65rem 0.75rem;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu a::before {
+            display: none;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(91, 163, 240, 0.1);
+            color: var(--white);
+        }
+
+        .dropdown-footer {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--dark-gray);
+        }
+
+        .dropdown-footer a {
+            color: #5BA3F0;
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-align: center;
+            display: block;
+        }
+
+        .dropdown-footer a:hover {
+            color: var(--white);
+            background: transparent;
+        }
+
+        .dropdown-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: none;
+        }
+
+        .dropdown-overlay.active {
+            display: block;
+        }
+
+        .cta-nav {
+            padding: 0.85rem 2rem;
+            background: transparent;
+            border: 2px solid transparent;
+            background-image: linear-gradient(#000, #000), var(--metallic-gradient);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .cta-nav:hover {
+            background-image: var(--metallic-gradient), var(--metallic-gradient);
+            color: var(--black);
+            box-shadow: 0 0 30px rgba(74, 158, 255, 0.6);
+        }
+
+        /* Section Styles */
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #5BA3F0;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: rgba(91, 163, 240, 0.1);
+            border: 1px solid rgba(91, 163, 240, 0.25);
+            border-radius: 50px;
+        }
+
+        .section-label::before {
+            content: '✦';
+            font-size: 0.7rem;
+        }
+
+        /* Hero Section - Full Width Background Image */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 10rem 0 6rem;
+            /* Replace with your actual image */
+            background-image: url('images/financial-services-hero.jpg');
+            background-size: cover;
+            background-position: center 60%;
+            background-repeat: no-repeat;
+        }
+
+        /* Gradient overlay for text readability */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(0, 0, 0, 0.95) 0%,
+                rgba(0, 0, 0, 0.85) 30%,
+                rgba(0, 0, 0, 0.5) 60%,
+                rgba(0, 0, 0, 0.2) 100%
+            );
+            z-index: 1;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1400px;
+            padding: 0 5rem;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 650px;
+            text-align: left;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 .highlight {
+            background: var(--metallic-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 550px;
+        }
+
+        .btn-primary {
+            padding: 1.2rem 2.5rem;
+            background: var(--metallic-gradient);
+            color: var(--black);
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 10px 40px rgba(74, 158, 255, 0.6);
+            transform: translateY(-2px);
+        }
+
+        /* Challenges Section */
+        .challenges-section {
+            padding: 6rem 0;
+            background: rgba(10, 10, 10, 0.7);
+            border-top: 1px solid var(--dark-gray);
+            border-bottom: 1px solid var(--dark-gray);
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 3.5vw, 2.75rem);
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .challenge-card {
+            background: var(--dark-gray);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .challenge-card:hover {
+            border-color: rgba(91, 163, 240, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .challenge-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(74, 143, 219, 0.12);
+            border: 1px solid rgba(74, 143, 219, 0.25);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5BA3F0;
+        }
+
+        .challenge-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .challenge-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .challenge-card p {
+            color: var(--light-gray);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* Use Cases Section */
+        .use-cases-section {
+            padding: 6rem 0;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .use-case-card {
+            background: var(--off-black);
+            border: 1px solid var(--dark-gray);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .use-case-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 17px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(91, 163, 240, 0.4), rgba(74, 143, 219, 0.1), rgba(91, 163, 240, 0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .use-case-card:hover::before {
+            opacity: 1;
+        }
+
+        .use-case-card:hover {
+            border-color: transparent;
+            transform: translateY(-4px);
+        }
+
+        .use-case-card h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .use-case-card p {
+            color: var(--light-gray);
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .use-case-metrics {
+            display: flex;
+            gap: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--dark-gray);
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--metallic-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--mid-gray);
+            margin-top: 0.25rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 8rem 0;
+            background: rgba(10, 10, 10, 0.7);
+            border-top: 1px solid var(--dark-gray);
+        }
+
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-content p {
+            font-size: 1.1rem;
+            color: var(--light-gray);
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            padding: 5rem 0 3rem;
+            border-top: 1px solid var(--dark-gray);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand p {
+            color: var(--light-gray);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-column h4 {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            color: var(--light-gray);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column a {
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--dark-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--mid-gray);
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom a {
+            color: var(--mid-gray);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--white);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .challenges-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 2rem;
+            }
+
+            .hero {
+                padding-top: 8rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .use-case-metrics {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Full-page ambient gradient background -->
+    <canvas class="ambient-canvas" id="ambientCanvas"></canvas>
+
+    <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="../index.html" class="logo">AVATON</a>
+                <ul class="nav-links">
+                    <li class="nav-dropdown" id="solutionsDropdown">
+                        <a href="javascript:void(0)" onclick="toggleDropdown(event)">Solutions</a>
+                        <div class="dropdown-menu">
+                            <div class="dropdown-columns">
+                                <div class="dropdown-column">
+                                    <h4>What We Do</h4>
+                                    <a href="../solutions/agentic-enterprise-transformation.html">Agentic Enterprise Transformation</a>
+                                    <a href="../solutions/pre-built-ai-agents.html">Pre-Built AI Agents</a>
+                                    <a href="../solutions/ai-operations-governance.html">AI Operations & Governance</a>
+                                    <a href="../solutions/data-modernization.html">Data Modernization for AI</a>
+                                </div>
+                                <div class="dropdown-column">
+                                    <h4>Industries</h4>
+                                    <a href="financial-services.html">Financial Services</a>
+                                    <a href="manufacturing.html">Manufacturing</a>
+                                    <a href="retail.html">Retail & CPG</a>
+                                    <a href="logistics.html">Logistics & Transportation</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li><a href="../approach/index.html">Approach</a></li>
+                    <li><a href="../index.html#case-studies">Case Studies</a></li>
+                    <li><a href="../index.html#insights">Insights</a></li>
+                    <li><a href="../index.html#about">About</a></li>
+                    <li><a href="../index.html#contact">Contact</a></li>
+                </ul>
+                <button class="cta-nav" onclick="window.location.href='../index.html#contact'">Get Started</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="section-label">Financial Services & Insurance</div>
+                <h1>Automate Compliance.<br>Accelerate <span class="highlight">Claims</span>.<br>Transform Service.</h1>
+                <p class="hero-subtitle">Deploy intelligent agents that handle claims processing, regulatory compliance, and customer onboarding while meeting BaFin requirements and DSGVO standards.</p>
+                <a href="../index.html#contact" class="btn-primary">Discuss Your Use Case →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Challenges Section -->
+    <section class="challenges-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Industry Challenges</div>
+                <h2 class="section-title">Why Financial Services Needs Agentic AI</h2>
+                <p class="section-subtitle">Manual processes, regulatory complexity, and customer expectations are creating unsustainable pressure on operations.</p>
+            </div>
+
+            <div class="challenges-grid">
+                <div class="challenge-card">
+                    <div class="challenge-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <h3>Slow Claims Processing</h3>
+                    <p>Manual document review and multi-system data entry creates weeks of delay, frustrating customers and tying up operational resources.</p>
+                </div>
+
+                <div class="challenge-card">
+                    <div class="challenge-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3>Regulatory Complexity</h3>
+                    <p>BaFin, DSGVO, and evolving EU regulations require constant monitoring and documentation that overwhelm compliance teams.</p>
+                </div>
+
+                <div class="challenge-card">
+                    <div class="challenge-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3>Customer Onboarding Friction</h3>
+                    <p>KYC processes take days instead of minutes, causing customer drop-off and competitive disadvantage against digital-first competitors.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="use-cases-section">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-label">Use Cases</div>
+                <h2 class="section-title">Agentic AI in Action</h2>
+                <p class="section-subtitle">Proven solutions delivering measurable results for financial institutions across Europe.</p>
+            </div>
+
+            <div class="use-cases-grid">
+                <div class="use-case-card">
+                    <h3>Intelligent Claims Processing</h3>
+                    <p>Agents that extract data from claims documents, cross-reference policy details, detect anomalies, and route complex cases to specialists—handling 70% of claims end-to-end.</p>
+                    <div class="use-case-metrics">
+                        <div class="metric">
+                            <span class="metric-value">70%</span>
+                            <span class="metric-label">Straight-through processing</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">4 days → 4 hours</span>
+                            <span class="metric-label">Average processing time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <h3>Automated KYC & Onboarding</h3>
+                    <p>Multi-agent system that verifies identity documents, performs sanctions screening, assesses risk profiles, and generates compliant documentation—reducing onboarding from days to minutes.</p>
+                    <div class="use-case-metrics">
+                        <div class="metric">
+                            <span class="metric-value">85%</span>
+                            <span class="metric-label">Faster onboarding</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">99.2%</span>
+                            <span class="metric-label">Compliance accuracy</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <h3>Regulatory Compliance Monitoring</h3>
+                    <p>Continuous monitoring agents that track regulatory changes, assess impact on existing processes, generate required documentation, and alert compliance teams to potential issues.</p>
+                    <div class="use-case-metrics">
+                        <div class="metric">
+                            <span class="metric-value">24/7</span>
+                            <span class="metric-label">Continuous monitoring</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">60%</span>
+                            <span class="metric-label">Reduced compliance costs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="use-case-card">
+                    <h3>Intelligent Customer Service</h3>
+                    <p>AI agents that handle policy inquiries, process routine changes, and escalate complex issues with full context—providing instant responses while maintaining audit trails.</p>
+                    <div class="use-case-metrics">
+                        <div class="metric">
+                            <span class="metric-value">65%</span>
+                            <span class="metric-label">Inquiries resolved instantly</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-value">40%</span>
+                            <span class="metric-label">Higher customer satisfaction</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Transform Your Financial Operations?</h2>
+                <p>Schedule a discovery call to explore how Agentic AI can automate your most resource-intensive processes while maintaining full regulatory compliance.</p>
+                <a href="../index.html#contact" class="btn-primary">Schedule Discovery Call →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>AVATON</h3>
+                    <p>Building the Agentic Enterprise for Europe</p>
+                    <p style="font-size: 0.9rem;"><strong>Google Cloud Partner</strong><br>Specializing in Vertex AI & Gemini Enterprise</p>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Solutions</h4>
+                    <ul>
+                        <li><a href="../solutions/agentic-enterprise-transformation.html">Agentic Enterprise</a></li>
+                        <li><a href="../solutions/pre-built-ai-agents.html">Pre-Built Agents</a></li>
+                        <li><a href="../solutions/ai-operations-governance.html">GenOps Platform</a></li>
+                        <li><a href="../solutions/data-modernization.html">Data Modernization</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Industries</h4>
+                    <ul>
+                        <li><a href="financial-services.html">Financial Services</a></li>
+                        <li><a href="manufacturing.html">Manufacturing</a></li>
+                        <li><a href="retail.html">Retail & CPG</a></li>
+                        <li><a href="logistics.html">Logistics</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="mailto:hello@avaton.ai">hello@avaton.ai</a></li>
+                        <li>Hohenbrunn, Bavaria</li>
+                        <li>Germany</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 AVATON. All rights reserved.</p>
+                <div>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#" style="margin: 0 1rem;">Impressum</a>
+                    <a href="#">Cookie Settings</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dropdown toggle functionality
+        function toggleDropdown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const dropdown = document.getElementById('solutionsDropdown');
+            const overlay = document.getElementById('dropdownOverlay');
+
+            if (dropdown.classList.contains('active')) {
+                closeDropdown();
+            } else {
+                dropdown.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeDropdown() {
+            const dropdown = document.getElementById('solutionsDropdown');
+            const overlay = document.getElementById('dropdownOverlay');
+            dropdown.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        document.getElementById('dropdownOverlay').addEventListener('click', closeDropdown);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ================================================
+        // Ambient Caustic Light Effect
+        // ================================================
+        const canvas = document.getElementById('ambientCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function noise(x, y, t) {
+            const n1 = Math.sin(x * 0.01 + t * 0.0003) * Math.cos(y * 0.012 + t * 0.0002);
+            const n2 = Math.sin(x * 0.008 - t * 0.0002) * Math.cos(y * 0.009 + t * 0.00025);
+            const n3 = Math.sin((x + y) * 0.006 + t * 0.00015);
+            return (n1 + n2 + n3) / 3;
+        }
+
+        const lights = [
+            { x: 0.3, y: 0.25, intensity: 0.55, radius: 0.5, speedX: 0.00002, speedY: 0.000015, phase: 0 },
+            { x: 0.7, y: 0.35, intensity: 0.4, radius: 0.4, speedX: -0.000015, speedY: 0.00002, phase: 2 },
+            { x: 0.5, y: 0.6, intensity: 0.3, radius: 0.45, speedX: 0.000018, speedY: -0.000012, phase: 4 }
+        ];
+
+        let time = 0;
+
+        function render() {
+            time++;
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, width, height);
+
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+            const step = 3;
+
+            for (let y = 0; y < height; y += step) {
+                for (let x = 0; x < width; x += step) {
+                    let totalLight = 0;
+
+                    for (const light of lights) {
+                        const noiseVal = noise(x, y, time + light.phase * 1000);
+                        const lightX = (light.x + Math.sin(time * light.speedX * 50 + light.phase) * 0.15 + noiseVal * 0.05) * width;
+                        const lightY = (light.y + Math.cos(time * light.speedY * 50 + light.phase) * 0.1 + noiseVal * 0.03) * height;
+
+                        const dx = x - lightX;
+                        const dy = y - lightY;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        const maxDist = light.radius * Math.max(width, height);
+
+                        if (dist < maxDist) {
+                            const falloff = 1 - (dist / maxDist);
+                            const caustic = 1 + noise(x * 2, y * 2, time * 0.5) * 0.4;
+                            totalLight += falloff * falloff * light.intensity * caustic;
+                        }
+                    }
+
+                    totalLight = Math.min(totalLight, 1);
+                    const r = Math.floor(totalLight * 45);
+                    const g = Math.floor(totalLight * 85);
+                    const b = Math.floor(totalLight * 140);
+
+                    for (let sy = 0; sy < step && y + sy < height; sy++) {
+                        for (let sx = 0; sx < step && x + sx < width; sx++) {
+                            const idx = ((y + sy) * width + (x + sx)) * 4;
+                            data[idx] = r;
+                            data[idx + 1] = g;
+                            data[idx + 2] = b;
+                            data[idx + 3] = 255;
+                        }
+                    }
+                }
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+            ctx.filter = 'blur(40px)';
+            ctx.drawImage(canvas, 0, 0);
+            ctx.filter = 'none';
+
+            requestAnimationFrame(render);
+        }
+
+        render();
+    </script>
+</body>
+</html>

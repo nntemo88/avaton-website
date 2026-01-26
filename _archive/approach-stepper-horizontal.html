@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option B: Horizontal Stepper | AVATON Approach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-card: #111111;
+            --border-primary: #1a1a1a;
+            --border-secondary: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --accent: #5BA3F0;
+            --accent-dim: rgba(91, 163, 240, 0.1);
+            --accent-border: rgba(91, 163, 240, 0.25);
+            --gradient: linear-gradient(135deg, #7BB8FF 0%, #5BA3F0 50%, #4A8FDB 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-primary);
+            height: 64px;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-cta {
+            padding: 0.625rem 1.25rem;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        /* Dropdown Menu - Click-based Two Column */
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-dropdown > a {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+        }
+
+        .nav-dropdown > a::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid var(--text-secondary);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .nav-dropdown.active > a::after {
+            border-top-color: var(--text-primary);
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown > a:hover::after {
+            border-top-color: var(--text-primary);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 560px;
+            background: rgba(10, 10, 10, 0.98);
+            border: 1px solid var(--border-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            margin-top: 0.75rem;
+            pointer-events: auto;
+        }
+
+        .dropdown-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .dropdown-column h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            padding: 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.65rem 0.75rem;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(91, 163, 240, 0.1);
+            color: var(--text-primary);
+        }
+
+        .dropdown-footer {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .dropdown-footer a {
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-align: center;
+            display: block;
+        }
+
+        .dropdown-footer a:hover {
+            color: var(--text-primary);
+            background: transparent;
+        }
+
+        .dropdown-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: none;
+        }
+
+        .dropdown-overlay.active {
+            display: block;
+        }
+
+        /* Sticky Stepper Header */
+        .stepper-header {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-primary);
+            padding: 1.5rem 0;
+        }
+
+        .stepper-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 3rem;
+        }
+
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--border-secondary);
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        .stepper-progress {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 2px;
+            background: var(--accent);
+            transform: translateY(-50%);
+            z-index: 1;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-circle,
+        .step.completed .step-circle {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .step.completed .step-circle {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        .step-label {
+            position: absolute;
+            top: 50px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            transition: color 0.3s ease;
+        }
+
+        .step.active .step-label {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 12rem 3rem 4rem;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-border);
+            border-radius: 50px;
+        }
+
+        .page-label::before {
+            content: '✦';
+            font-size: 0.7rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Phase Sections */
+        .phase-section {
+            min-height: 100vh;
+            padding: 8rem 3rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .phase-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .phase-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .phase-section:nth-child(odd) .phase-container {
+            direction: rtl;
+        }
+
+        .phase-section:nth-child(odd) .phase-container > * {
+            direction: ltr;
+        }
+
+        .phase-content {
+            max-width: 500px;
+        }
+
+        .phase-number {
+            font-size: 5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+
+        .phase-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .phase-duration {
+            font-size: 1rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+        }
+
+        .phase-content p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .phase-content ul {
+            list-style: none;
+        }
+
+        .phase-content li {
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .phase-content li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.55rem;
+            width: 6px;
+            height: 6px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        /* Visual Card */
+        .phase-visual {
+            background: var(--bg-card);
+            border: 1px solid var(--border-secondary);
+            border-radius: 20px;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .phase-visual::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 21px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(91, 163, 240, 0.3), transparent, rgba(91, 163, 240, 0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .visual-title {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .visual-list {
+            list-style: none;
+        }
+
+        .visual-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-primary);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .visual-list li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .visual-list li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 8rem 3rem;
+            background: var(--bg-secondary);
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 1000px) {
+            .phase-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .phase-section:nth-child(odd) .phase-container {
+                direction: ltr;
+            }
+
+            .phase-content {
+                max-width: none;
+            }
+
+            .stepper-header {
+                display: none;
+            }
+
+            .page-header {
+                padding-top: 8rem;
+            }
+
+            .phase-section {
+                min-height: auto;
+                padding: 5rem 3rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .phase-content h2 {
+                font-size: 1.75rem;
+            }
+
+            .phase-number {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="avaton-website.html" class="logo">AVATON</a>
+            <ul class="nav-links">
+                <li class="nav-dropdown" id="solutionsDropdown">
+                    <a href="javascript:void(0)" onclick="toggleDropdown(event)">Solutions</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-columns">
+                            <div class="dropdown-column">
+                                <h4>What We Do</h4>
+                                <a href="solutions/agentic-enterprise-transformation.html">Agentic Enterprise Transformation</a>
+                                <a href="solutions/pre-built-ai-agents.html">Pre-Built AI Agents</a>
+                                <a href="solutions/ai-operations-governance.html">AI Operations & Governance</a>
+                                <a href="solutions/data-modernization.html">Data Modernization for AI</a>
+                            </div>
+                            <div class="dropdown-column">
+                                <h4>Industries</h4>
+                                <a href="industries/financial-services.html">Financial Services</a>
+                                <a href="industries/manufacturing.html">Manufacturing</a>
+                                <a href="industries/retail.html">Retail & E-commerce</a>
+                                <a href="industries/logistics.html">Logistics & Transportation</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="approach-stepper-horizontal.html" class="active">Approach</a></li>
+                <li><a href="avaton-website.html#case-studies">Case Studies</a></li>
+                <li><a href="avaton-website.html#insights">Insights</a></li>
+                <li><a href="avaton-website.html#about">About</a></li>
+            </ul>
+            <a href="avaton-website.html#contact" class="nav-cta">Get Started</a>
+        </div>
+    </nav>
+
+    <div class="stepper-header">
+        <div class="stepper-container">
+            <div class="stepper">
+                <div class="stepper-progress" id="stepperProgress"></div>
+                <div class="step active" data-phase="1">
+                    <div class="step-circle">01</div>
+                    <span class="step-label">Strategy</span>
+                </div>
+                <div class="step" data-phase="2">
+                    <div class="step-circle">02</div>
+                    <span class="step-label">Proof of Value</span>
+                </div>
+                <div class="step" data-phase="3">
+                    <div class="step-circle">03</div>
+                    <span class="step-label">Adoption</span>
+                </div>
+                <div class="step" data-phase="4">
+                    <div class="step-circle">04</div>
+                    <span class="step-label">Production</span>
+                </div>
+                <div class="step" data-phase="5">
+                    <div class="step-circle">05</div>
+                    <span class="step-label">Scale</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="page-header">
+        <span class="page-label">Option B: Horizontal Stepper</span>
+        <h1>How We Build Your Agentic Enterprise</h1>
+        <p>A proven five-phase framework that takes you from strategy to production in 12 weeks—not 12 months.</p>
+    </header>
+
+    <!-- Phase 1 -->
+    <section class="phase-section" id="phase-1">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">01</div>
+                <h2>Strategy First</h2>
+                <div class="phase-duration">Week 1-2</div>
+                <p>We start with your business goals, not with technology. Before writing a single line of code, we work with your leadership team to understand what success actually looks like.</p>
+                <ul>
+                    <li>Deep process decomposition and workflow analysis</li>
+                    <li>Prioritization based on value and feasibility</li>
+                    <li>Governance model for risk and compliance</li>
+                    <li>Business case with measurable ROI targets</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-title">What You Get</div>
+                <ul class="visual-list">
+                    <li>Strategic roadmap aligned to business metrics</li>
+                    <li>Use case prioritization matrix</li>
+                    <li>Governance framework</li>
+                    <li>ROI projections and business case</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 2 -->
+    <section class="phase-section" id="phase-2">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">02</div>
+                <h2>Fast Proof of Value</h2>
+                <div class="phase-duration">Week 3-6</div>
+                <p>Using our library of pre-built agent frameworks and accelerators, we deliver a working proof of concept in 3-4 weeks. This is not a demo—it's a functional system running against your real data.</p>
+                <ul>
+                    <li>Pre-built frameworks for common patterns</li>
+                    <li>Integration with your actual data sources</li>
+                    <li>Measurable results you can validate</li>
+                    <li>Change management from day one</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-title">What You Get</div>
+                <ul class="visual-list">
+                    <li>Working POC in 3-4 weeks</li>
+                    <li>Integration with real systems</li>
+                    <li>Validation report with metrics</li>
+                    <li>Adoption readiness plan</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 3 -->
+    <section class="phase-section" id="phase-3">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">03</div>
+                <h2>Change & Adoption</h2>
+                <div class="phase-duration">Ongoing</div>
+                <p>AI projects fail not because the technology doesn't work, but because people don't use it. We integrate change management into every phase—not as an afterthought.</p>
+                <ul>
+                    <li>Stakeholder communication programs</li>
+                    <li>Hands-on training for end users</li>
+                    <li>Internal AI fluency development</li>
+                    <li>Feedback loops for improvement</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-title">What You Get</div>
+                <ul class="visual-list">
+                    <li>Training materials and sessions</li>
+                    <li>Communication templates</li>
+                    <li>Adoption metrics dashboard</li>
+                    <li>Continuous feedback system</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 4 -->
+    <section class="phase-section" id="phase-4">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">04</div>
+                <h2>Production Deployment</h2>
+                <div class="phase-duration">Week 7-10</div>
+                <p>Moving from POC to production is where most AI initiatives stall. We know exactly what it takes to cross this gap with enterprise security and seamless integration.</p>
+                <ul>
+                    <li>Enterprise security controls</li>
+                    <li>DSGVO compliance and data governance</li>
+                    <li>Integration with SAP, Salesforce, core systems</li>
+                    <li>Testing, monitoring, rollback capabilities</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-title">What You Get</div>
+                <ul class="visual-list">
+                    <li>Production-grade deployment</li>
+                    <li>Security documentation</li>
+                    <li>Full system integrations</li>
+                    <li>Monitoring dashboards</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 5 -->
+    <section class="phase-section" id="phase-5">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">05</div>
+                <h2>Operate & Scale</h2>
+                <div class="phase-duration">Week 11-12+</div>
+                <p>Deploying an AI agent is not the finish line—it's the starting point. We ensure your investment continues to deliver value over time with operational excellence.</p>
+                <ul>
+                    <li>Ongoing monitoring and optimization</li>
+                    <li>Automated drift detection</li>
+                    <li>Cost management and optimization</li>
+                    <li>Expansion playbook for new use cases</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-title">What You Get</div>
+                <ul class="visual-list">
+                    <li>Operations runbook</li>
+                    <li>Performance reports</li>
+                    <li>Scaling recommendations</li>
+                    <li>Full knowledge transfer</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Ready to start your journey?</h2>
+        <p>Book a 60-minute strategy session to map your highest-impact opportunities.</p>
+        <a href="avaton-website.html#contact" class="btn-primary">Book a Strategy Session</a>
+    </section>
+
+    <script>
+        // Update stepper based on scroll position
+        const phases = document.querySelectorAll('.phase-section');
+        const steps = document.querySelectorAll('.step');
+        const progress = document.getElementById('stepperProgress');
+
+        function updateStepper() {
+            let currentPhase = 1;
+
+            phases.forEach((phase, index) => {
+                const rect = phase.getBoundingClientRect();
+                if (rect.top < window.innerHeight / 2) {
+                    currentPhase = index + 1;
+                }
+            });
+
+            steps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index + 1 < currentPhase) {
+                    step.classList.add('completed');
+                } else if (index + 1 === currentPhase) {
+                    step.classList.add('active');
+                }
+            });
+
+            // Update progress bar
+            const progressPercent = ((currentPhase - 1) / (steps.length - 1)) * 100;
+            progress.style.width = progressPercent + '%';
+        }
+
+        window.addEventListener('scroll', updateStepper);
+        updateStepper();
+
+        // Click on step to scroll to phase
+        steps.forEach(step => {
+            step.addEventListener('click', () => {
+                const phaseNum = step.dataset.phase;
+                const target = document.getElementById('phase-' + phaseNum);
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Dropdown toggle functionality
+        function toggleDropdown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const dropdown = document.getElementById('solutionsDropdown');
+            const overlay = document.getElementById('dropdownOverlay');
+
+            if (dropdown.classList.contains('active')) {
+                closeDropdown();
+            } else {
+                dropdown.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeDropdown() {
+            const dropdown = document.getElementById('solutionsDropdown');
+            const overlay = document.getElementById('dropdownOverlay');
+            dropdown.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        document.getElementById('dropdownOverlay').addEventListener('click', closeDropdown);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Option C: Full-Page Sections | AVATON Approach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-card: #111111;
+            --border-primary: #1a1a1a;
+            --border-secondary: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --accent: #5BA3F0;
+            --accent-dim: rgba(91, 163, 240, 0.1);
+            --accent-border: rgba(91, 163, 240, 0.25);
+            --gradient: linear-gradient(135deg, #7BB8FF 0%, #5BA3F0 50%, #4A8FDB 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(30px);
+            border-bottom: 1px solid rgba(91, 168, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            padding: 1rem 0;
+            background: rgba(0, 0, 0, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links > li > a::before {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links > li > a:hover::before {
+            width: 100%;
+        }
+
+        /* Dropdown Menu - Click-based Two Column */
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-dropdown > a {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+        }
+
+        .nav-dropdown > a::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid var(--text-secondary);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .nav-dropdown.active > a::after {
+            border-top-color: var(--text-primary);
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown > a:hover::after {
+            border-top-color: var(--text-primary);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 560px;
+            background: rgba(10, 10, 10, 0.98);
+            border: 1px solid var(--border-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            margin-top: 0.75rem;
+            pointer-events: auto;
+        }
+
+        .dropdown-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .dropdown-column h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            padding: 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.65rem 0.75rem;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu a::before {
+            display: none;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(91, 163, 240, 0.1);
+            color: var(--text-primary);
+        }
+
+        .dropdown-footer {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .dropdown-footer a {
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-align: center;
+            display: block;
+        }
+
+        .dropdown-footer a:hover {
+            color: var(--text-primary);
+            background: transparent;
+        }
+
+        /* Dropdown overlay for click-outside detection */
+        .dropdown-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: none;
+        }
+
+        .dropdown-overlay.active {
+            display: block;
+        }
+
+        .nav-cta {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 2px solid transparent;
+            background-image: linear-gradient(#000, #000), var(--gradient);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-cta:hover {
+            background: var(--gradient);
+            background-clip: padding-box;
+            color: #000;
+        }
+
+        /* Progress Dots */
+        .progress-dots {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .progress-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s;
+            pointer-events: none;
+        }
+
+        .progress-dot:hover::after {
+            opacity: 1;
+        }
+
+        .progress-dot.active {
+            background: var(--accent);
+            transform: scale(1.3);
+        }
+
+        /* Full Page Sections */
+        .section {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 5rem 3rem;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            background: radial-gradient(ellipse at center, rgba(91, 163, 240, 0.08) 0%, transparent 70%);
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .page-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-border);
+            border-radius: 50px;
+        }
+
+        .page-label::before {
+            content: '✦';
+            font-size: 0.7rem;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 3rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Phase Sections */
+        .phase-section {
+            padding: 0;
+        }
+
+        .phase-container {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .phase-section:nth-child(odd) .phase-container {
+            direction: rtl;
+        }
+
+        .phase-section:nth-child(odd) .phase-container > * {
+            direction: ltr;
+        }
+
+        .phase-content {
+            max-width: 550px;
+        }
+
+        .phase-number {
+            font-size: 8rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 0.85;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .phase-content h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+
+        .phase-duration {
+            font-size: 1.1rem;
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+
+        .phase-content p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .phase-content ul {
+            list-style: none;
+        }
+
+        .phase-content li {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .phase-content li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        /* Visual Side */
+        .phase-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .visual-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .visual-card:hover {
+            border-color: var(--accent-border);
+            transform: translateY(-4px);
+        }
+
+        .visual-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 17px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(91, 163, 240, 0.2), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .visual-card:hover::before {
+            opacity: 1;
+        }
+
+        .visual-card-title {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .visual-card-content {
+            font-size: 1rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .visual-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .visual-stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .visual-stat-unit {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--bg-secondary);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 1.25rem 3rem;
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(91, 163, 240, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            html {
+                scroll-snap-type: none;
+            }
+
+            .section {
+                min-height: auto;
+                padding: 6rem 2rem;
+            }
+
+            .phase-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .phase-section:nth-child(odd) .phase-container {
+                direction: ltr;
+            }
+
+            .phase-content {
+                max-width: none;
+            }
+
+            .phase-number {
+                font-size: 5rem;
+            }
+
+            .phase-content h2 {
+                font-size: 2rem;
+            }
+
+            .progress-dots {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+
+            .phase-number {
+                font-size: 4rem;
+            }
+
+            .phase-content h2 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="avaton-website.html" class="logo">AVATON</a>
+            <ul class="nav-links">
+                <li class="nav-dropdown" id="solutionsDropdown">
+                    <a href="javascript:void(0)" onclick="toggleDropdown(event)">Solutions</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-columns">
+                            <div class="dropdown-column">
+                                <h4>What We Do</h4>
+                                <a href="solutions/agentic-enterprise-transformation.html">Agentic Enterprise Transformation</a>
+                                <a href="solutions/pre-built-ai-agents.html">Pre-Built AI Agents</a>
+                                <a href="solutions/ai-operations-governance.html">AI Operations & Governance</a>
+                                <a href="solutions/data-modernization.html">Data Modernization for AI</a>
+                            </div>
+                            <div class="dropdown-column">
+                                <h4>Industries</h4>
+                                <a href="industries/financial-services.html">Financial Services</a>
+                                <a href="industries/manufacturing.html">Manufacturing</a>
+                                <a href="industries/retail.html">Retail & E-commerce</a>
+                                <a href="industries/logistics.html">Logistics & Transportation</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="approach-fullpage-sections.html" style="color: var(--text-primary);">Approach</a></li>
+                <li><a href="avaton-website.html#case-studies">Case Studies</a></li>
+                <li><a href="avaton-website.html#insights">Insights</a></li>
+                <li><a href="avaton-website.html#about">About</a></li>
+                <li><a href="avaton-website.html#contact">Contact</a></li>
+            </ul>
+            <button class="nav-cta" onclick="window.location.href='avaton-website.html#contact'">Get Started</button>
+        </div>
+    </nav>
+
+    <div class="progress-dots">
+        <div class="progress-dot active" data-section="0" data-label="Intro"></div>
+        <div class="progress-dot" data-section="1" data-label="Strategy"></div>
+        <div class="progress-dot" data-section="2" data-label="Proof of Value"></div>
+        <div class="progress-dot" data-section="3" data-label="Adoption"></div>
+        <div class="progress-dot" data-section="4" data-label="Production"></div>
+        <div class="progress-dot" data-section="5" data-label="Scale"></div>
+        <div class="progress-dot" data-section="6" data-label="Get Started"></div>
+    </div>
+
+    <!-- Hero -->
+    <section class="section hero-section" id="section-0">
+        <div class="hero-content">
+            <span class="page-label">Option C: Full-Page Sections</span>
+            <h1>How We Build Your Agentic Enterprise</h1>
+            <p>A proven five-phase framework that takes you from strategy to production in 12 weeks—not 12 months. Scroll to explore each phase.</p>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll to explore</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Phase 1 -->
+    <section class="section phase-section" id="section-1">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">01</div>
+                <h2>Strategy First</h2>
+                <div class="phase-duration">Week 1-2</div>
+                <p>We start with your business goals, not with technology. Before writing a single line of code, we work with your leadership team to understand what success actually looks like.</p>
+                <ul>
+                    <li>Deep process decomposition and workflow analysis</li>
+                    <li>Prioritization based on value and feasibility</li>
+                    <li>Governance model for risk and compliance</li>
+                    <li>Business case with measurable ROI targets</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-card">
+                    <div class="visual-card-title">Timeline</div>
+                    <div class="visual-stat">
+                        <span class="visual-stat-number">2</span>
+                        <span class="visual-stat-unit">weeks</span>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-title">Key Deliverable</div>
+                    <div class="visual-card-content">Strategic roadmap aligned to your core business metrics—not a generic AI strategy document.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 2 -->
+    <section class="section phase-section" id="section-2">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">02</div>
+                <h2>Fast Proof of Value</h2>
+                <div class="phase-duration">Week 3-6</div>
+                <p>Using our library of pre-built agent frameworks and accelerators, we deliver a working proof of concept in 3-4 weeks. This is not a demo—it's a functional system running against your real data.</p>
+                <ul>
+                    <li>Pre-built frameworks for common patterns</li>
+                    <li>Integration with your actual data sources</li>
+                    <li>Measurable results you can validate</li>
+                    <li>Change management from day one</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-card">
+                    <div class="visual-card-title">Timeline</div>
+                    <div class="visual-stat">
+                        <span class="visual-stat-number">3-4</span>
+                        <span class="visual-stat-unit">weeks</span>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-title">Key Deliverable</div>
+                    <div class="visual-card-content">Working POC with real data integrations and measurable results you can validate internally.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 3 -->
+    <section class="section phase-section" id="section-3">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">03</div>
+                <h2>Change & Adoption</h2>
+                <div class="phase-duration">Ongoing</div>
+                <p>AI projects fail not because the technology doesn't work, but because people don't use it. We integrate change management into every phase—not as an afterthought.</p>
+                <ul>
+                    <li>Stakeholder communication programs</li>
+                    <li>Hands-on training for end users</li>
+                    <li>Internal AI fluency development</li>
+                    <li>Feedback loops for improvement</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-card">
+                    <div class="visual-card-title">Focus</div>
+                    <div class="visual-stat">
+                        <span class="visual-stat-number">100%</span>
+                        <span class="visual-stat-unit">adoption</span>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-title">Key Deliverable</div>
+                    <div class="visual-card-content">Genuine adoption that sticks—not just deployment, but real behavioral change across your organization.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 4 -->
+    <section class="section phase-section" id="section-4">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">04</div>
+                <h2>Production Deployment</h2>
+                <div class="phase-duration">Week 7-10</div>
+                <p>Moving from POC to production is where most AI initiatives stall. We know exactly what it takes to cross this gap with enterprise security and seamless integration.</p>
+                <ul>
+                    <li>Enterprise security controls</li>
+                    <li>DSGVO compliance and data governance</li>
+                    <li>Integration with SAP, Salesforce, core systems</li>
+                    <li>Testing, monitoring, rollback capabilities</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-card">
+                    <div class="visual-card-title">Security</div>
+                    <div class="visual-stat">
+                        <span class="visual-stat-number">100%</span>
+                        <span class="visual-stat-unit">DSGVO</span>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-title">Key Deliverable</div>
+                    <div class="visual-card-content">A production system that meets enterprise standards—not a prototype held together with workarounds.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phase 5 -->
+    <section class="section phase-section" id="section-5">
+        <div class="phase-container">
+            <div class="phase-content">
+                <div class="phase-number">05</div>
+                <h2>Operate & Scale</h2>
+                <div class="phase-duration">Week 11-12+</div>
+                <p>Deploying an AI agent is not the finish line—it's the starting point. We ensure your investment continues to deliver value over time with operational excellence.</p>
+                <ul>
+                    <li>Ongoing monitoring and optimization</li>
+                    <li>Automated drift detection</li>
+                    <li>Cost management and optimization</li>
+                    <li>Expansion playbook for new use cases</li>
+                </ul>
+            </div>
+            <div class="phase-visual">
+                <div class="visual-card">
+                    <div class="visual-card-title">Total Timeline</div>
+                    <div class="visual-stat">
+                        <span class="visual-stat-number">12</span>
+                        <span class="visual-stat-unit">weeks</span>
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-title">Key Deliverable</div>
+                    <div class="visual-card-content">Full independence with a trained team, or ongoing managed operations—your choice.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-section" id="section-6">
+        <div class="cta-content">
+            <h2>Ready to start your journey?</h2>
+            <p>Book a 60-minute strategy session to map your highest-impact opportunities and outline a realistic path to production.</p>
+            <a href="avaton-website.html#contact" class="btn-primary">Book a Strategy Session</a>
+        </div>
+    </section>
+
+    <script>
+        // Dropdown toggle functionality (click-based)
+        function toggleDropdown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const dropdown = document.getElementById('solutionsDropdown');
+            const overlay = document.getElementById('dropdownOverlay');
+
+            if (dropdown.classList.contains('active')) {
+                closeDropdown();
+            } else {
+                dropdown.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeDropdown() {
+            const dropdown = document.getElementById('solutionsDropdown');
+            const overlay = document.getElementById('dropdownOverlay');
+            dropdown.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        // Close dropdown when clicking overlay
+        document.getElementById('dropdownOverlay').addEventListener('click', closeDropdown);
+
+        // Close dropdown on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Update progress dots on scroll
+        const sections = document.querySelectorAll('.section');
+        const dots = document.querySelectorAll('.progress-dot');
+
+        function updateDots() {
+            let currentSection = 0;
+
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top < window.innerHeight / 2) {
+                    currentSection = index;
+                }
+            });
+
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSection);
+            });
+        }
+
+        window.addEventListener('scroll', updateDots);
+        updateDots();
+
+        // Click on dot to scroll to section
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sectionIndex = dot.dataset.section;
+                const target = document.getElementById('section-' + sectionIndex);
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

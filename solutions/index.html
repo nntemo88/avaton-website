@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions | AVATON - Agentic AI Solutions for Enterprise</title>
+    <meta name="description" content="End-to-end capabilities from data foundation to production agents to ongoing operations. Everything you need to build, deploy, and scale Agentic AI on Google Cloud.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-card: #0d0d0d;
+            --border-primary: #1a1a1a;
+            --border-secondary: #222222;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --accent: #5BA3F0;
+            --accent-dim: rgba(91, 163, 240, 0.1);
+            --accent-border: rgba(91, 163, 240, 0.25);
+            --gradient: linear-gradient(135deg, #7BB8FF 0%, #5BA3F0 50%, #4A8FDB 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigation */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-primary);
+            padding: 1.25rem 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        /* Dropdown Menu - Click-based Two Column */
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-dropdown > a {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+        }
+
+        .nav-dropdown > a::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            border-top: 5px solid var(--text-secondary);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .nav-dropdown.active > a::after {
+            border-top-color: var(--text-primary);
+            transform: rotate(180deg);
+        }
+
+        .nav-dropdown > a:hover::after {
+            border-top-color: var(--text-primary);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 560px;
+            background: rgba(10, 10, 10, 0.98);
+            border: 1px solid var(--border-primary);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+
+        .nav-dropdown.active .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            margin-top: 0.75rem;
+            pointer-events: auto;
+        }
+
+        .dropdown-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .dropdown-column h4 {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            padding: 0 0.75rem;
+            font-weight: 600;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 0.65rem 0.75rem;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(91, 163, 240, 0.1);
+            color: var(--text-primary);
+        }
+
+        .dropdown-footer {
+            margin-top: 1.25rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .dropdown-footer a {
+            color: var(--accent);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-align: center;
+            display: block;
+        }
+
+        .dropdown-footer a:hover {
+            color: var(--text-primary);
+            background: transparent;
+        }
+
+        .dropdown-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: none;
+        }
+
+        .dropdown-overlay.active {
+            display: block;
+        }
+
+        .nav-cta {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 12rem 3rem 6rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-border);
+            border-radius: 50px;
+        }
+
+        .hero-label::before {
+            content: '✦';
+            font-size: 0.7rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.15;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--gradient);
+            color: var(--bg-primary);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(91, 163, 240, 0.3);
+        }
+
+        .btn-primary::after {
+            content: '→';
+            transition: transform 0.2s;
+        }
+
+        .btn-primary:hover::after {
+            transform: translateX(4px);
+        }
+
+        /* Solutions Grid */
+        .solutions-section {
+            padding: 4rem 3rem 8rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .solution-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-secondary);
+            border-radius: 20px;
+            padding: 3rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .solution-card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: 21px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(91, 163, 240, 0.4), transparent, rgba(91, 163, 240, 0.2));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .solution-card:hover::before {
+            opacity: 1;
+        }
+
+        .solution-card:hover {
+            border-color: transparent;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(91, 163, 240, 0.15);
+        }
+
+        .solution-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--accent-dim);
+            border: 1px solid var(--accent-border);
+            border-radius: 14px;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+
+        .solution-icon svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .solution-card h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .solution-tagline {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .solution-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: gap 0.2s;
+        }
+
+        .solution-card:hover .solution-link {
+            gap: 0.75rem;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 4rem 3rem;
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-brand {
+            font-size: 1.25rem;
+            font-weight: 800;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .footer-legal {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-legal a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+
+        .footer-legal a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .solutions-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero {
+                padding: 10rem 1.5rem 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .solutions-section {
+                padding: 2rem 1.5rem 4rem;
+            }
+
+            .solution-card {
+                padding: 2rem;
+            }
+
+            .footer-content,
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dropdown-overlay" id="dropdownOverlay"></div>
+
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">AVATON</a>
+            <ul class="nav-links">
+                <li class="nav-dropdown" id="solutionsDropdown">
+                    <a href="javascript:void(0)" onclick="toggleDropdown(event)" class="active">Solutions</a>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-columns">
+                            <div class="dropdown-column">
+                                <h4>What We Do</h4>
+                                <a href="agentic-enterprise-transformation.html">Agentic Enterprise Transformation</a>
+                                <a href="pre-built-ai-agents.html">Pre-Built AI Agents</a>
+                                <a href="ai-operations-governance.html">AI Operations & Governance</a>
+                                <a href="data-modernization.html">Data Modernization for AI</a>
+                            </div>
+                            <div class="dropdown-column">
+                                <h4>Industries</h4>
+                                <a href="../industries/financial-services.html">Financial Services</a>
+                                <a href="../industries/manufacturing.html">Manufacturing</a>
+                                <a href="../industries/retail.html">Retail & CPG</a>
+                                <a href="../industries/logistics.html">Logistics & Transportation</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="../approach/index.html">Approach</a></li>
+                <li><a href="../index.html#case-studies">Case Studies</a></li>
+                <li><a href="../index.html#insights">Insights</a></li>
+                <li><a href="../index.html#about">About</a></li>
+            </ul>
+            <a href="../index.html#contact" class="nav-cta">Get Started</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <span class="hero-label">Solutions</span>
+        <h1>Solutions for the Agentic Enterprise</h1>
+        <p>End-to-end capabilities from data foundation to production agents to ongoing operations. Everything you need to build, deploy, and scale Agentic AI on Google Cloud.</p>
+        <a href="../index.html#contact" class="btn-primary">Discuss your requirements</a>
+    </section>
+
+    <section class="solutions-section">
+        <div class="solutions-grid">
+            <!-- Solution 1: Agentic Enterprise Transformation -->
+            <a href="agentic-enterprise-transformation.html" class="solution-card">
+                <div class="solution-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <h2>Agentic Enterprise Transformation</h2>
+                <p class="solution-tagline">From strategy to production in 90 days. A complete transformation program for enterprises ready to move beyond isolated AI experiments.</p>
+                <span class="solution-link">Learn more →</span>
+            </a>
+
+            <!-- Solution 2: Pre-Built AI Agents -->
+            <a href="pre-built-ai-agents.html" class="solution-card">
+                <div class="solution-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                </div>
+                <h2>Pre-Built AI Agents</h2>
+                <p class="solution-tagline">Production-ready agents deployed in weeks. Pre-built for customer service, document processing, back-office operations, and analytics.</p>
+                <span class="solution-link">Learn more →</span>
+            </a>
+
+            <!-- Solution 3: AI Operations & Governance -->
+            <a href="ai-operations-governance.html" class="solution-card">
+                <div class="solution-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <h2>AI Operations & Governance</h2>
+                <p class="solution-tagline">Keep your agents performant, compliant, and cost-effective. Monitoring, governance, and optimization for production AI.</p>
+                <span class="solution-link">Learn more →</span>
+            </a>
+
+            <!-- Solution 4: Data Modernization -->
+            <a href="data-modernization.html" class="solution-card">
+                <div class="solution-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                    </svg>
+                </div>
+                <h2>Data Modernization for AI</h2>
+                <p class="solution-tagline">Build the foundation your agents require. Transform your data infrastructure into an AI-ready platform on Google Cloud.</p>
+                <span class="solution-link">Learn more →</span>
+            </a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">AVATON</div>
+            <ul class="footer-links">
+                <li><a href="../solutions/">Solutions</a></li>
+                <li><a href="../approach/index.html">Approach</a></li>
+                <li><a href="../index.html#case-studies">Case Studies</a></li>
+                <li><a href="../index.html#contact">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 AVATON. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Impressum</a>
+                <a href="#">Cookie Settings</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleDropdown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const dropdown = document.getElementById('solutionsDropdown');
+            const overlay = document.getElementById('dropdownOverlay');
+
+            if (dropdown.classList.contains('active')) {
+                closeDropdown();
+            } else {
+                dropdown.classList.add('active');
+                overlay.classList.add('active');
+            }
+        }
+
+        function closeDropdown() {
+            const dropdown = document.getElementById('solutionsDropdown');
+            const overlay = document.getElementById('dropdownOverlay');
+            dropdown.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        document.getElementById('dropdownOverlay').addEventListener('click', closeDropdown);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDropdown();
+            }
+        });
+    </script>
+</body>
+</html>
