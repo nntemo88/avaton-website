@@ -113,11 +113,11 @@ h1,h2,h3,h4{line-height:1.08;font-weight:700;letter-spacing:-.02em}
 .hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,26px)}
-.stat{position:relative;padding:32px 22px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);overflow:hidden}
+.stat{position:relative;padding:32px 22px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);overflow:hidden;text-align:center}
 .stat::before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;background:var(--metallic);transform:scaleX(0);transform-origin:left;transition:transform .8s var(--e-out)}
 .stat.in::before{transform:scaleX(1)}
 .stat .num{font-size:clamp(20px,4.2vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1;white-space:nowrap;background:var(--metallic-soft);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.stat .lab{margin-top:14px;color:var(--text-muted);font-size:15px;max-width:26ch}
+.stat .lab{margin-top:14px;color:var(--text-muted);font-size:15px;text-wrap:balance}
 /* INDUSTRIES */
 .ind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .ind{position:relative;display:flex;flex-direction:column;gap:13px;padding:26px;border-radius:var(--r-lg);background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--line);overflow:hidden;scroll-margin-top:90px}
