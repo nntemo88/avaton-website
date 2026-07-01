@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AVATON | Agentic AI for European Enterprises | Google Cloud Partner</title>
+<title>Blog | Avaton</title>
 <meta name="description" content="We design, deploy and govern AI agents that do real work in production, fully EU-compliant. Google Cloud Partner for European enterprise." />
 <meta name="theme-color" content="#050507" />
 <meta property="og:type" content="website" />
@@ -246,6 +246,19 @@ h1,h2,h3,h4{line-height:1.08;font-weight:700;letter-spacing:-.02em}
 @media(max-width:620px){.ind-stage{min-height:clamp(340px,58vh,470px)}}
 @media(max-width:760px){.ind-tabs{-webkit-mask-image:linear-gradient(90deg,#000 80%,transparent 100%);mask-image:linear-gradient(90deg,#000 80%,transparent 100%)}}
 </style>
+<style>
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.post{display:flex;flex-direction:column;border-radius:var(--r-lg);overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--line);transition:border-color .25s,box-shadow .25s,transform .25s}
+.post:hover{border-color:var(--line-blue);box-shadow:var(--sh-2);transform:translateY(-3px)}
+.post:hover .mesh{transform:scale(1.08)}
+.post .thumb{height:160px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0f1726,#070a10)}
+.post .thumb .mesh{position:absolute;inset:0;background-image:radial-gradient(circle at 30% 30%,rgba(91,163,240,.4),transparent 50%),radial-gradient(circle at 70% 70%,rgba(58,124,199,.3),transparent 50%);transition:transform .6s var(--e-out)}
+.post .thumb .kind{position:absolute;top:14px;left:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;background:rgba(5,5,7,.7);border:1px solid var(--line-strong);padding:5px 11px;border-radius:var(--r-pill);color:var(--blue-200)}
+.post .pbody{padding:24px;display:flex;flex-direction:column;flex:1}
+.post h4{font-size:18px;line-height:1.3;margin-bottom:10px}
+.post p{font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:18px;flex:1}
+@media(max-width:880px){.posts{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
@@ -301,187 +314,57 @@ h1,h2,h3,h4{line-height:1.08;font-weight:700;letter-spacing:-.02em}
   <a href="#book" class="btn btn-primary btn-block">Get in touch</a>
 </div>
 
-<span id="top"></span>
-
 <!-- HERO -->
 <header class="hero">
-  <div class="hero-bg" aria-hidden="true">
-    <div class="aurora a1"></div><div class="aurora a2"></div><div class="aurora a3"></div>
-    <div class="grid-floor"></div>
-  </div>
+  <div class="hero-bg" aria-hidden="true"><div class="aurora a1"></div><div class="aurora a2"></div><div class="aurora a3"></div><div class="grid-floor"></div></div>
   <div class="wrap hero-inner">
-    <h1 data-reveal>Agentic AI for<br><span class="grad">European Enterprises</span></h1>
-    <p class="lead" data-reveal data-delay="1">We design, deploy and govern AI agents that do real work in production &mdash; fully EU-compliant.</p>
-    <div class="hero-cta" data-reveal data-delay="2">
-      <a href="#book" class="btn btn-primary btn-lg">Get in touch
-        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
-    </div>
+    <span class="eyebrow" data-reveal>Blog</span>
+    <h1 data-reveal data-delay="1">Agentic AI in <span class="grad">European enterprise</span></h1>
+    <p class="lead" data-reveal data-delay="2">Field notes on putting AI agents into production across European industry.</p>
   </div>
 </header>
 
-<!-- STATS -->
+<!-- POSTS -->
 <section class="section" style="padding-top:0">
   <div class="wrap">
-    <div class="stats">
-      <div class="stat" data-reveal><div class="num" data-count="85" data-suffix="%">85%</div><div class="lab">Manual steps automated in the first pilot</div></div>
-      <div class="stat" data-reveal data-delay="1"><div class="num" data-count="12" data-suffix=" weeks">12 weeks</div><div class="lab">Average time to a production agent</div></div>
-      <div class="stat" data-reveal data-delay="2"><div class="num" data-count="2.4" data-prefix="&euro;" data-suffix="M" data-decimals="1">&euro;2.4M</div><div class="lab">Average annual savings achieved</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- INDUSTRIES -->
-<section class="section" id="industries" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <span class="eyebrow">Industries</span>
-      <h2 class="h2">Built for <span class="grad">your industry</span></h2>
-      <p class="lead">We know the workflows, data and compliance realities of each sector, and tailor agents to the problems that matter there.</p>
-    </div>
-    <div class="ind-tabs" data-reveal role="tablist">
-      <button class="ind-tab is-active" data-ind="financial-services" role="tab" aria-selected="true">Financial Services</button>
-      <button class="ind-tab" data-ind="manufacturing" role="tab" aria-selected="false">Manufacturing</button>
-      <button class="ind-tab" data-ind="retail" role="tab" aria-selected="false">Retail &amp; CPG</button>
-      <button class="ind-tab" data-ind="logistics" role="tab" aria-selected="false">Logistics &amp; Transport</button>
-      <button class="ind-tab" data-ind="energy" role="tab" aria-selected="false">Energy</button>
-      <button class="ind-tab" data-ind="public-sector" role="tab" aria-selected="false">Public Sector</button>
-      <button class="ind-tab" data-ind="agriculture" role="tab" aria-selected="false">Agriculture</button>
-      <button class="ind-tab" data-ind="insurance" role="tab" aria-selected="false">Insurance</button>
-    </div>
-    <a class="ind-stage" id="indStage" href="industries/financial-services.html" data-reveal data-delay="1" style="background-image:url(industries/images/financial-services-hero.jpg)" aria-label="Explore the selected industry">
-      <span class="ind-stage-scrim"></span>
-      <span class="ind-stage-inner">
-        <span class="ind-stage-title" id="indTitle">Financial Services</span>
-        <span class="ind-stage-tag" id="indTag">Compliance, Speed, Trust</span>
-        <span class="btn btn-lg ind-stage-btn">Explore more <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </span>
-    </a>
-  </div>
-</section>
-
-<!-- WHAT WE DO -->
-<section class="section" id="solutions" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <span class="eyebrow">What we do</span>
-      <h2 class="h2">Agentic AI solutions that <span class="grad">ship to production</span></h2>
-      <p class="lead">Three ways we take European enterprises from AI ambition to deployed, governed systems.</p>
-    </div>
-    <div class="wgrid">
-      <article class="wcard" data-reveal>
-        <div class="w-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 2L4.5 13.5H11l-1 8.5L19.5 10H13z"/></svg></div>
-        <h3>Agentic Enterprise Transformation</h3>
-        <div class="plabel">Business problem</div>
-        <p class="prob">Your AI initiatives stall at proof-of-concept while competitors deploy.</p>
-        <p class="out"><b>Outcome:</b> a roadmap to your highest-value workflows, a production-ready architecture and agents live within 90 days.</p>
-        <a href="#book" class="link-arrow">Learn more <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </article>
-      <article class="wcard" data-reveal data-delay="1">
-        <div class="w-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6M9 13h6M9 17h3"/></svg></div>
-        <h3>Pre-Built AI Agents</h3>
-        <div class="plabel">Business problem</div>
-        <p class="prob">Building agents from scratch takes 12 to 18 months you don't have.</p>
-        <p class="out"><b>Outcome:</b> production-ready agents for customer service, document processing, back-office, ESG and research, deployed in weeks, not years.</p>
-        <a href="#book" class="link-arrow">Learn more <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </article>
-      <article class="wcard" data-reveal data-delay="2">
-        <div class="w-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l8 4v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
-        <h3>AI Operations &amp; Governance <span style="color:var(--text-dim);font-weight:500;font-size:.72em">(GenOps)</span></h3>
-        <div class="plabel">Business problem</div>
-        <p class="prob">Agents in production without proper controls create risk and runaway costs.</p>
-        <p class="out"><b>Outcome:</b> continuous monitoring, governance and cost optimisation that keep your agents performant, compliant and cost-effective.</p>
-        <a href="#book" class="link-arrow">Learn more <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- APPROACH -->
-<section class="section" id="approach" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head center" data-reveal>
-      <span class="eyebrow center">How it works</span>
-      <h2 class="h2">From idea to production in <span class="grad">90&nbsp;days</span></h2>
-      <p class="lead" style="margin-inline:auto">One structured path. No 18-month science projects, no pilots that never graduate.</p>
-    </div>
-    <div class="phases">
-      <article class="phase" data-reveal style="--fill:33%">
-        <div class="ph-top"><span class="pnum">01</span><span class="pweek">Weeks 1&ndash;2</span></div>
-        <div class="dotline"></div>
-        <h3>Identify the opportunity</h3>
-        <p>We work backwards from a measurable business outcome, with a clear business case before any agent is built.</p>
-        <ul class="plist">
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>Workflow mapping and ROI targets</li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>Use-case prioritisation by value</li>
-        </ul>
-      </article>
-      <article class="phase" data-reveal data-delay="1" style="--fill:66%">
-        <div class="ph-top"><span class="pnum">02</span><span class="pweek">Weeks 3&ndash;6</span></div>
-        <div class="dotline"></div>
-        <h3>Prove value fast</h3>
-        <p>A working agent on your real data in weeks. Measurable results you can validate internally, not slideware.</p>
-        <ul class="plist">
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>Pre-built agent frameworks</li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>Integration with your real systems</li>
-        </ul>
-      </article>
-      <article class="phase" data-reveal data-delay="2" style="--fill:100%">
-        <div class="ph-top"><span class="pnum">03</span><span class="pweek">Weeks 7&ndash;12</span></div>
-        <div class="dotline"></div>
-        <h3>Go live and govern</h3>
-        <p>Production deployment with enterprise security, plus continuous governance that keeps every agent compliant and in budget.</p>
-        <ul class="plist">
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>ERP / CRM and core-system integration</li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>Monitoring, governance and DSGVO</li>
-        </ul>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- CASE STUDY -->
-<section class="section" id="case" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head" data-reveal>
-      <span class="eyebrow">Case study</span>
-      <h2 class="h2">Proof, <span class="grad">not pilots</span></h2>
-    </div>
-    <div class="case" data-reveal>
-      <div class="case-inner">
-        <div class="case-metrics">
-          <div class="cm"><div class="num">3&times;</div><div class="lab">faster to build and deploy a production AI model</div></div>
-          <div class="cm"><div class="num">&euro;1M+</div><div class="lab">saved a year by one quality agent</div></div>
-          <div class="cm"><div class="num">1.5M+</div><div class="lab">open synthetic training images</div></div>
-          <div class="cm"><div class="num">0</div><div class="lab">lines of code to teach a robot</div></div>
+    <div class="posts">
+      <a href="#" class="post" data-reveal>
+        <div class="thumb"><div class="mesh"></div><span class="kind">Playbook</span></div>
+        <div class="pbody">
+          <h4>How a major European bank cut AI time-to-market from 12 months to 3</h4>
+          <p>The six levers that move agentic AI from idea to production in a regulated enterprise.</p>
+          <span class="link-arrow">Read more <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </div>
-        <div class="case-body">
-          <div class="tagline">A global automotive OEM &middot; Manufacturing</div>
-          <h3>A crew of agents builds, trains and runs the factory in simulation</h3>
-          <div class="cs-row"><b>Challenge</b>Building digital twins, training robots and generating quality-inspection data took weeks of specialist work, and every change risked the live line.</div>
-          <div class="cs-row"><b>Solution</b>A crew of specialised agents reads real plant scans and rules, plans and validates layouts, builds a navigable 3D twin and teaches robots their tasks, all on open synthetic data.</div>
-          <div class="cs-row"><b>Result</b>Production AI models built in a fraction of the time, robots that learn handling with no manual code, and quality agents that catch defects and adjust parameters on the line.</div>
-          <p class="case-note">Anonymised. Agentic AI for industry, shown at Google Cloud Summit 2026.</p>
+      </a>
+      <a href="#" class="post" data-reveal data-delay="1">
+        <div class="thumb"><div class="mesh"></div><span class="kind">Case note</span></div>
+        <div class="pbody">
+          <h4>Document automation at scale: 1M+ documents a month, in production</h4>
+          <p>How a major retailer turned unstructured invoices and delivery notes into validated data, faster than off-the-shelf tools.</p>
+          <span class="link-arrow">Read more <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </div>
-      </div>
+      </a>
+      <a href="#" class="post" data-reveal data-delay="2">
+        <div class="thumb"><div class="mesh"></div><span class="kind">Guide</span></div>
+        <div class="pbody">
+          <h4>From pilot to production: why most enterprise AI stalls, and what works</h4>
+          <p>The structural reasons agents never graduate from the demo, and the methodology that gets them live.</p>
+          <span class="link-arrow">Read more <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
-
-<!-- Insights section moved to blog.html -->
 
 <!-- FINAL CTA -->
-<section class="section" id="book" style="padding-top:0">
+<section class="section" id="contact" style="padding-top:0">
   <div class="wrap">
     <div class="final" data-reveal>
-      <div class="hero-bg" aria-hidden="true"><div class="aurora a1" style="left:-15%;top:-40%"></div><div class="aurora a2" style="right:-15%;bottom:-50%;top:auto"></div></div>
       <div class="final-in">
         <span class="eyebrow center">Let's talk</span>
-        <h2 style="margin-top:18px">Find out where agentic AI creates measurable value for you</h2>
-        <p>In a focused session we map your highest-impact workflows and outline a realistic path to production.</p>
-        <a href="#book" class="btn btn-primary btn-lg" data-book>Get in touch
-          <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
+        <h2 style="margin-top:16px">Find out where agentic AI creates measurable value for you</h2>
+        <p>In a focused session we map your highest-impact workflows and outline a realistic, compliant path to production.</p>
+        <a href="https://calendar.app.google/KM5x5BvyPZCXzASa6" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Get in touch <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <p class="micro">No pitch. Just a clear assessment of what's possible.</p>
       </div>
     </div>
