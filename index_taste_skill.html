@@ -56,7 +56,7 @@ h1,h2,h3,h4{line-height:1.08;font-weight:700;letter-spacing:-.02em}
 .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;border-radius:var(--r-pill);font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;transition:transform .35s var(--e-spring),box-shadow .35s var(--e-out),background .3s;will-change:transform}
 .btn:focus-visible{outline:2px solid var(--blue-400);outline-offset:3px}
 .btn .ico{transition:transform .35s var(--e-out)}
-.btn-primary{background:var(--metallic);color:#06121f;font-weight:700;box-shadow:var(--sh-blue),inset 0 1px 0 rgba(255,255,255,.45)}
+.btn-primary{background:var(--metallic);color:#06121f;box-shadow:var(--sh-blue),inset 0 1px 0 rgba(255,255,255,.45)}
 .btn-primary::after{content:"";position:absolute;inset:0;background:var(--sheen);transform:translateX(-120%);transition:transform .7s var(--e-out)}
 .btn-primary:hover{transform:translateY(-3px)}.btn-primary:hover::after{transform:translateX(120%)}.btn-primary:hover .ico{transform:translateX(4px)}
 .btn-lg{padding:18px 36px;font-size:16px}.btn-block{width:100%}
@@ -113,11 +113,11 @@ h1,h2,h3,h4{line-height:1.08;font-weight:700;letter-spacing:-.02em}
 .hero-cta{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,26px)}
-.stat{position:relative;padding:32px 22px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);overflow:hidden;text-align:center}
+.stat{position:relative;padding:32px 28px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);overflow:hidden}
 .stat::before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;background:var(--metallic);transform:scaleX(0);transform-origin:left;transition:transform .8s var(--e-out)}
 .stat.in::before{transform:scaleX(1)}
-.stat .num{font-size:clamp(20px,4.2vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1;white-space:nowrap;background:var(--metallic-soft);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.stat .lab{margin-top:14px;color:var(--text-muted);font-size:15px;text-wrap:balance}
+.stat .num{font-size:clamp(26px,6vw,60px);font-weight:800;letter-spacing:-.04em;line-height:1;white-space:nowrap;background:var(--metallic-soft);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat .lab{margin-top:14px;color:var(--text-muted);font-size:15px;max-width:26ch}
 /* INDUSTRIES */
 .ind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .ind{position:relative;display:flex;flex-direction:column;gap:13px;padding:26px;border-radius:var(--r-lg);background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--line);overflow:hidden;scroll-margin-top:90px}
@@ -325,8 +325,8 @@ h1,h2,h3,h4{line-height:1.08;font-weight:700;letter-spacing:-.02em}
   <div class="wrap">
     <div class="stats">
       <div class="stat" data-reveal><div class="num" data-count="85" data-suffix="%">85%</div><div class="lab">Manual steps automated in the first pilot</div></div>
-      <div class="stat" data-reveal data-delay="1"><div class="num">4-6 weeks</div><div class="lab">Time to a production agent</div></div>
-      <div class="stat" data-reveal data-delay="2"><div class="num" data-count="100" data-suffix="%">100%</div><div class="lab">EU AI Act ready</div></div>
+      <div class="stat" data-reveal data-delay="1"><div class="num" data-count="12" data-suffix=" weeks">12 weeks</div><div class="lab">Average time to a production agent</div></div>
+      <div class="stat" data-reveal data-delay="2"><div class="num" data-count="100" data-suffix="%">100%</div><div class="lab">Auditable, EU-compliant by design</div></div>
     </div>
   </div>
 </section>
