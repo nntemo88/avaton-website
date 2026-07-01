@@ -1,1329 +1,379 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manufacturing & Industry 4.0 | AVATON - Agentic AI Solutions</title>
-    <meta name="description" content="Agentic AI for Manufacturing. Optimize production planning, quality control, and supply chain coordination with intelligent agents. Seamless SAP integration.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --black: #000000;
-            --off-black: #0a0a0a;
-            --dark-gray: #1a1a1a;
-            --mid-gray: #666666;
-            --light-gray: #999999;
-            --white: #ffffff;
-            --metallic-gradient: linear-gradient(135deg, #7BB8FF 0%, #5BA3F0 35%, #4A8FDB 65%, #3A7CC7 100%);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--black);
-            color: var(--white);
-            line-height: 1.65;
-            font-size: 16px;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Full-page ambient gradient canvas */
-        .ambient-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 5rem;
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 2rem 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(30px);
-            border-bottom: 1px solid rgba(91, 168, 255, 0.1);
-            transition: all 0.4s ease;
-        }
-
-        nav.scrolled {
-            padding: 1.25rem 0;
-            background: rgba(0, 0, 0, 0.95);
-        }
-
-        .nav-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            color: var(--white);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .logo:hover {
-            background: var(--metallic-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-        }
-
-        .nav-links > li {
-            position: relative;
-        }
-
-        .nav-links a {
-            color: var(--light-gray);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            letter-spacing: -0.01em;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links > li > a::before {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--metallic-gradient);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--white);
-        }
-
-        .nav-links > li > a:hover::before {
-            width: 100%;
-        }
-
-        /* Dropdown Menu */
-        .nav-dropdown {
-            position: relative;
-        }
-
-        .nav-dropdown > a {
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-            cursor: pointer;
-        }
-
-        .nav-dropdown > a::after {
-            content: '';
-            width: 0;
-            height: 0;
-            border-left: 4px solid transparent;
-            border-right: 4px solid transparent;
-            border-top: 5px solid var(--light-gray);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-        }
-
-        .nav-dropdown.active > a::after {
-            border-top-color: var(--white);
-            transform: rotate(180deg);
-        }
-
-        .nav-dropdown > a:hover::after {
-            border-top-color: var(--white);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            min-width: 560px;
-            background: rgba(10, 10, 10, 0.98);
-            border: 1px solid var(--dark-gray);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-top: 1rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            pointer-events: none;
-        }
-
-        .nav-dropdown.active .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            margin-top: 0.75rem;
-            pointer-events: auto;
-        }
-
-        .dropdown-columns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        .dropdown-column h4 {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--white);
-            margin-bottom: 1rem;
-            padding: 0 0.75rem;
-            font-weight: 600;
-        }
-
-        .dropdown-menu a {
-            display: block;
-            padding: 0.65rem 0.75rem;
-            border-radius: 8px;
-            transition: background 0.2s ease;
-            color: var(--light-gray);
-            font-size: 0.9rem;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .dropdown-menu a::before {
-            display: none;
-        }
-
-        .dropdown-menu a:hover {
-            background: rgba(91, 163, 240, 0.1);
-            color: var(--white);
-        }
-
-        .dropdown-footer {
-            margin-top: 1.25rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--dark-gray);
-        }
-
-        .dropdown-footer a {
-            color: #5BA3F0;
-            font-weight: 500;
-            font-size: 0.85rem;
-            text-align: center;
-            display: block;
-        }
-
-        .dropdown-footer a:hover {
-            color: var(--white);
-            background: transparent;
-        }
-
-        .dropdown-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 999;
-            display: none;
-        }
-
-        .dropdown-overlay.active {
-            display: block;
-        }
-
-        .cta-nav {
-            padding: 0.85rem 2rem;
-            background: transparent;
-            border: 2px solid transparent;
-            background-image: linear-gradient(#000, #000), var(--metallic-gradient);
-            background-origin: border-box;
-            background-clip: padding-box, border-box;
-            color: var(--white);
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 8px;
-        }
-
-        .cta-nav:hover {
-            background-image: var(--metallic-gradient), var(--metallic-gradient);
-            color: var(--black);
-            box-shadow: 0 0 30px rgba(74, 158, 255, 0.6);
-        }
-
-        /* Section Styles */
-        .section-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.8rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: #5BA3F0;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            background: rgba(91, 163, 240, 0.1);
-            border: 1px solid rgba(91, 163, 240, 0.25);
-            border-radius: 50px;
-        }
-
-        .section-label::before {
-            content: '✦';
-            font-size: 0.7rem;
-        }
-
-        /* Hero Section - Full Width Background Image */
-        .hero {
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            padding: 10rem 0 6rem;
-            /* Replace with your actual image */
-            background-image: url('images/manufacturing-hero.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        /* Gradient overlay for text readability */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(
-                90deg,
-                rgba(0, 0, 0, 0.95) 0%,
-                rgba(0, 0, 0, 0.85) 30%,
-                rgba(0, 0, 0, 0.5) 60%,
-                rgba(0, 0, 0, 0.2) 100%
-            );
-            z-index: 1;
-        }
-
-        .hero .container {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            max-width: 1400px;
-            padding: 0 5rem;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            max-width: 650px;
-            text-align: left;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 4.5vw, 3.5rem);
-            font-weight: 700;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero h1 .highlight {
-            background: var(--metallic-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: 1.15rem;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 400;
-            line-height: 1.7;
-            margin-bottom: 2.5rem;
-            max-width: 550px;
-        }
-
-        .btn-primary {
-            padding: 1.2rem 2.5rem;
-            background: var(--metallic-gradient);
-            color: var(--black);
-            border: none;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            border-radius: 8px;
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 10px 40px rgba(74, 158, 255, 0.6);
-            transform: translateY(-2px);
-        }
-
-        /* Challenges Section */
-        .challenges-section {
-            padding: 6rem 0;
-            background: rgba(10, 10, 10, 0.7);
-            border-top: 1px solid var(--dark-gray);
-            border-bottom: 1px solid var(--dark-gray);
-        }
-
-        .section-header {
-            margin-bottom: 4rem;
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 3.5vw, 2.75rem);
-            font-weight: 700;
-            line-height: 1.25;
-            letter-spacing: -0.02em;
-            margin-bottom: 1rem;
-        }
-
-        .section-subtitle {
-            font-size: 1.1rem;
-            color: var(--light-gray);
-            max-width: 600px;
-            line-height: 1.7;
-        }
-
-        .challenges-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-        }
-
-        .challenge-card {
-            background: var(--dark-gray);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 2.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .challenge-card:hover {
-            border-color: rgba(91, 163, 240, 0.3);
-            transform: translateY(-4px);
-        }
-
-        .challenge-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(74, 143, 219, 0.12);
-            border: 1px solid rgba(74, 143, 219, 0.25);
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #5BA3F0;
-        }
-
-        .challenge-icon svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .challenge-card h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -0.01em;
-        }
-
-        .challenge-card p {
-            color: var(--light-gray);
-            line-height: 1.7;
-            font-size: 0.95rem;
-        }
-
-        /* Use Cases Section */
-        .use-cases-section {
-            padding: 6rem 0;
-        }
-
-        .use-cases-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2rem;
-        }
-
-        .use-case-card {
-            background: var(--off-black);
-            border: 1px solid var(--dark-gray);
-            border-radius: 16px;
-            padding: 2.5rem;
-            transition: all 0.4s ease;
-            position: relative;
-        }
-
-        .use-case-card::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border-radius: 17px;
-            padding: 1px;
-            background: linear-gradient(135deg, rgba(91, 163, 240, 0.4), rgba(74, 143, 219, 0.1), rgba(91, 163, 240, 0.2));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
-
-        .use-case-card:hover::before {
-            opacity: 1;
-        }
-
-        .use-case-card:hover {
-            border-color: transparent;
-            transform: translateY(-4px);
-        }
-
-        .use-case-card h3 {
-            font-size: 1.35rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            letter-spacing: -0.01em;
-        }
-
-        .use-case-card p {
-            color: var(--light-gray);
-            line-height: 1.7;
-            font-size: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .use-case-metrics {
-            display: flex;
-            gap: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--dark-gray);
-        }
-
-        .metric {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .metric-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: var(--metallic-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-        }
-
-        .metric-label {
-            font-size: 0.8rem;
-            color: var(--mid-gray);
-            margin-top: 0.25rem;
-        }
-
-        /* CTA Section */
-        .cta-section {
-            text-align: center;
-            padding: 8rem 0;
-            background: rgba(10, 10, 10, 0.7);
-            border-top: 1px solid var(--dark-gray);
-        }
-
-        .cta-content {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .cta-content h2 {
-            font-size: clamp(2rem, 4vw, 2.75rem);
-            font-weight: 700;
-            line-height: 1.25;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.5rem;
-        }
-
-        .cta-content p {
-            font-size: 1.1rem;
-            color: var(--light-gray);
-            margin-bottom: 2.5rem;
-            line-height: 1.7;
-        }
-
-        /* Footer */
-        footer {
-            padding: 5rem 0 3rem;
-            border-top: 1px solid var(--dark-gray);
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 4rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-brand h3 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .footer-brand p {
-            color: var(--light-gray);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .footer-column h4 {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 1.5rem;
-            color: var(--light-gray);
-        }
-
-        .footer-column ul {
-            list-style: none;
-        }
-
-        .footer-column li {
-            margin-bottom: 0.75rem;
-        }
-
-        .footer-column a {
-            color: var(--light-gray);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-column a:hover {
-            color: var(--white);
-        }
-
-        .footer-bottom {
-            padding-top: 2rem;
-            border-top: 1px solid var(--dark-gray);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--mid-gray);
-            font-size: 0.9rem;
-        }
-
-        .footer-bottom a {
-            color: var(--mid-gray);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-bottom a:hover {
-            color: var(--white);
-        }
-
-        /* Mobile Menu Toggle */
-        .mobile-menu-toggle {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 44px;
-            height: 44px;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            z-index: 1001;
-        }
-
-        .mobile-menu-toggle span {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: var(--white);
-            border-radius: 2px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .mobile-menu-toggle span::before,
-        .mobile-menu-toggle span::after {
-            content: '';
-            position: absolute;
-            width: 24px;
-            height: 2px;
-            background: var(--white);
-            border-radius: 2px;
-            transition: all 0.3s ease;
-            left: 0;
-        }
-
-        .mobile-menu-toggle span::before { top: -8px; }
-        .mobile-menu-toggle span::after { top: 8px; }
-
-        .mobile-menu-toggle.active span { background: transparent; }
-        .mobile-menu-toggle.active span::before { top: 0; transform: rotate(45deg); }
-        .mobile-menu-toggle.active span::after { top: 0; transform: rotate(-45deg); }
-
-        /* Mobile Menu Overlay */
-        .mobile-menu-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            max-width: 400px;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.98);
-            backdrop-filter: blur(20px);
-            z-index: 999;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-            padding: 6rem 2rem 2rem;
-        }
-
-        .mobile-menu.active { right: 0; }
-
-        .mobile-menu-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .mobile-menu-links > li { border-bottom: 1px solid var(--dark-gray); }
-
-        .mobile-menu-links > li > a {
-            display: block;
-            padding: 1.25rem 0;
-            color: var(--white);
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .mobile-menu-links > li > a:hover { color: #5BA3F0; }
-
-        .mobile-menu-links > li > a.mobile-dropdown-toggle {
-            display: flex !important;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .mobile-dropdown-toggle::after {
-            content: '';
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 6px solid var(--light-gray);
-            transition: transform 0.3s ease;
-            flex-shrink: 0;
-            margin-left: 1rem;
-        }
-
-        .mobile-dropdown.active .mobile-dropdown-toggle::after { transform: rotate(180deg); }
-
-        .mobile-dropdown-menu {
-            display: none;
-            padding: 0.5rem 0 1rem 1rem;
-        }
-
-        .mobile-dropdown.active .mobile-dropdown-menu { display: block; }
-
-        .mobile-dropdown-menu a {
-            display: block;
-            padding: 0.75rem 0;
-            color: var(--light-gray);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
-
-        .mobile-dropdown-menu a:hover { color: #5BA3F0; }
-
-        .mobile-dropdown-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--white);
-            margin: 1.25rem 0 0.5rem;
-            font-weight: 700;
-        }
-
-        .mobile-menu-cta {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--dark-gray);
-        }
-
-        .mobile-menu-cta .btn-primary {
-            width: 100%;
-            text-align: center;
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .mobile-menu-toggle { display: flex; }
-            .cta-nav { display: none; }
-
-            .nav-links {
-                display: none;
-            }
-
-            .challenges-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .use-cases-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-                gap: 3rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 2rem;
-            }
-
-            .hero {
-                padding-top: 8rem;
-            }
-
-            /* Darker overlay on mobile for better text readability */
-            .hero::before {
-                background: linear-gradient(
-                    180deg,
-                    rgba(0, 0, 0, 0.85) 0%,
-                    rgba(0, 0, 0, 0.7) 40%,
-                    rgba(0, 0, 0, 0.5) 70%,
-                    rgba(0, 0, 0, 0.4) 100%
-                );
-            }
-
-            .hero .container {
-                padding: 0 2rem;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-bottom {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            .use-case-metrics {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manufacturing | AVATON</title>
+<meta name="description" content="AI agents for digital factory simulation, self-teaching robotics, quality inspection and predictive maintenance across European manufacturers. Built on Google Cloud." />
+<meta name="theme-color" content="#050507" />
+<link rel="stylesheet" href="../css/fonts.css" />
+<style>
+:root{
+  --blue-200:#aecffb;--blue-300:#87b7f8;--blue-400:#6eaaf4;--blue-500:#5ba3f0;--blue-600:#4a8fdb;--blue-700:#3a7cc7;
+  --ink-950:#050507;--text:#eef1f6;--text-soft:#b9bfca;--text-muted:#8a909c;--text-dim:#646a76;
+  --line:rgba(255,255,255,.08);--line-strong:rgba(255,255,255,.14);--line-blue:rgba(91,163,240,.28);
+  --metallic:linear-gradient(135deg,#7bb8ff 0%,#5ba3f0 35%,#4a8fdb 65%,#3a7cc7 100%);
+  --metallic-soft:linear-gradient(135deg,#9cc9ff 0%,#6eaaf4 50%,#4a8fdb 100%);
+  --sheen:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.5) 50%,transparent 70%);
+  --glow-blue:rgba(91,163,240,.45);--surface:rgba(255,255,255,.022);--surface-2:rgba(255,255,255,.04);
+  --r-sm:10px;--r-md:16px;--r-lg:22px;--r-xl:30px;--r-pill:999px;
+  --sh-2:0 10px 30px -12px rgba(0,0,0,.7);--sh-3:0 30px 70px -24px rgba(0,0,0,.85);--sh-blue:0 20px 60px -18px rgba(58,124,199,.55);
+  --e-out:cubic-bezier(.22,.61,.36,1);--e-inout:cubic-bezier(.65,.05,.36,1);--e-spring:cubic-bezier(.34,1.56,.64,1);
+  --font:'Inter',-apple-system,system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+  --maxw:1680px;--gutter:clamp(20px,4vw,52px);--nav-h:74px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 24px);-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--ink-950);color:var(--text);line-height:1.6;font-size:16px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+svg{display:block}
+ul{list-style:none}
+::selection{background:rgba(91,163,240,.32);color:#fff}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(120% 70% at 50% -10%,rgba(74,143,219,.12),transparent 60%)}
+.wrap{width:100%;max-width:var(--maxw);margin-inline:auto;padding-inline:var(--gutter)}
+section{position:relative;z-index:2}
+.section{padding-block:clamp(56px,8vw,104px)}
+.eyebrow{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--blue-300);display:inline-flex;align-items:center;gap:10px}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--blue-500);opacity:.7}
+.eyebrow.center{justify-content:center}.eyebrow.center::after{content:"";width:22px;height:1px;background:var(--blue-500);opacity:.7}
+h1,h2,h3,h4{line-height:1.1;font-weight:700;letter-spacing:-.02em}
+.h2{font-size:clamp(28px,4vw,46px);font-weight:700;letter-spacing:-.03em}
+.lead{color:var(--text-soft);font-size:clamp(16px,1.6vw,19px);max-width:62ch}
+.grad{background:var(--metallic);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.sec-head{max-width:720px;margin-bottom:clamp(36px,5vw,56px)}
+.sec-head.center{margin-inline:auto;text-align:center}
+.sec-head .h2{margin:16px 0}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;border-radius:var(--r-pill);font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;transition:transform .35s var(--e-spring),box-shadow .35s var(--e-out);will-change:transform}
+.btn-primary{background:var(--metallic);color:#06121f;box-shadow:var(--sh-blue),inset 0 1px 0 rgba(255,255,255,.45)}
+.btn-primary::after{content:"";position:absolute;inset:0;background:var(--sheen);transform:translateX(-120%);transition:transform .7s var(--e-out)}
+.btn-primary:hover{transform:translateY(-3px)}.btn-primary:hover::after{transform:translateX(120%)}.btn-primary:hover .ico{transform:translateX(4px)}
+.btn .ico{transition:transform .35s var(--e-out)}.btn-lg{padding:18px 36px;font-size:16px}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);display:flex;align-items:center;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(10,11,15,.82);backdrop-filter:blur(18px) saturate(160%);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{font-weight:800;font-size:22px;letter-spacing:.16em;display:flex;align-items:center;gap:11px}
+.brand .dot{width:11px;height:11px;border-radius:50%;background:var(--metallic);box-shadow:0 0 16px var(--glow-blue)}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links>li>a,.nav-trigger{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:var(--r-sm);font-size:14.5px;font-weight:500;color:var(--text-soft);transition:color .25s,background .25s}
+.nav-links>li>a:hover,.nav-trigger:hover{color:#fff;background:var(--surface-2)}
+.nav-caret{width:14px;height:14px;transition:transform .3s var(--e-out)}
+.has-mega{position:relative}
+.mega{position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%) translateY(8px);width:min(560px,86vw);background:#0c0e14;border:1px solid var(--line-strong);border-radius:var(--r-lg);padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;opacity:0;visibility:hidden;pointer-events:none;box-shadow:var(--sh-3);transition:opacity .3s,transform .3s,visibility .3s}
+.has-mega:hover .mega,.has-mega.open .mega{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.mega::before{content:"";position:absolute;left:0;right:0;bottom:100%;height:18px}
+.has-mega:hover .nav-caret{transform:rotate(180deg)}
+.mega a{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:var(--r-sm);border:1px solid transparent;transition:background .25s}
+.mega a:hover{background:rgba(91,163,240,.1);border-color:var(--line-blue)}
+.mega a strong{font-size:14px;font-weight:600;color:var(--text)}.mega a span{font-size:12px;color:var(--text-muted)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.burger{display:none;width:44px;height:44px;border-radius:var(--r-sm);border:1px solid var(--line-strong);background:var(--surface-2);flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.burger span{width:18px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}.burger.open span:nth-child(2){opacity:0}.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.drawer{position:fixed;inset:var(--nav-h) 0 0;z-index:99;background:#070809;padding:24px var(--gutter);overflow-y:auto;transform:translateY(-12px);opacity:0;visibility:hidden;transition:.35s}
+.drawer.open{transform:translateY(0);opacity:1;visibility:visible}
+.drawer a{display:block;padding:13px 4px;font-size:17px;font-weight:500;border-bottom:1px solid var(--line)}
+.drawer .mlabel{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);margin-top:22px;padding:0 4px 4px}
+.drawer .btn{margin-top:24px;width:100%}
+/* HERO */
+.subhero{position:relative;overflow:hidden;min-height:100vh;min-height:100dvh;display:flex;align-items:center;padding:calc(var(--nav-h) + clamp(36px,7vh,80px)) 0 clamp(44px,7vh,80px)}
+.subhero-bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center center}
+.subhero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,5,7,.85) 0%,rgba(5,5,7,.75) 34%,rgba(5,5,7,.54) 54%,rgba(5,5,7,.24) 74%,rgba(5,5,7,0) 96%)}
+@media(max-width:760px){.subhero-bg::after{background:linear-gradient(180deg,rgba(5,5,7,.5),rgba(5,5,7,.85))}}
+.subhero-inner{position:relative;z-index:3;max-width:var(--maxw)}
+.subhero-inner>*{max-width:600px}
+.crumb{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin-bottom:18px}
+.crumb a{color:var(--blue-300)}
+.subhero h1{font-size:clamp(34px,5.4vw,60px);font-weight:800;letter-spacing:-.04em;margin-bottom:20px}
+.subhero .lead{margin-bottom:30px}
+/* CHALLENGES */
+.chal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.chal{display:flex;flex-direction:column;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:var(--r-lg);padding:30px 30px;transition:border-color .25s,box-shadow .25s,transform .25s}
+.chal:hover{border-color:var(--line-blue);box-shadow:var(--sh-2);transform:translateY(-3px)}
+.chal-ico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;margin-bottom:20px;background:linear-gradient(135deg,rgba(91,163,240,.2),rgba(58,124,199,.08));border:1px solid var(--line-blue);color:var(--blue-200)}
+.chal-ico svg{width:24px;height:24px}
+.chal h4{font-size:20px;letter-spacing:-.02em;margin-bottom:11px}
+.chal p{font-size:15.5px;color:var(--text-soft);line-height:1.6}
+.chal p b{color:var(--blue-200);font-weight:600}
+/* USE CASES */
+.uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.uc{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.015));border:1px solid var(--line);border-radius:var(--r-lg);padding:26px 28px;overflow:hidden;transition:border-color .25s,box-shadow .25s}
+.uc:hover{border-color:var(--line-blue);box-shadow:var(--sh-2)}
+.uc-ico{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:16px;background:linear-gradient(135deg,rgba(91,163,240,.2),rgba(58,124,199,.08));border:1px solid var(--line-blue);color:var(--blue-200)}
+.uc-ico svg{width:23px;height:23px}
+.uc h3{font-size:18.5px;letter-spacing:-.01em;margin-bottom:8px}
+.uc p{font-size:14px;color:var(--text-soft);line-height:1.55;margin-bottom:12px}
+.uc .out{font-size:13.5px;color:var(--text);display:flex;align-items:flex-start;gap:9px;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md);padding:9px 12px}
+.uc .out svg{width:15px;height:15px;color:var(--blue-300);flex-shrink:0;margin-top:2px}
+.uc .out b{color:var(--blue-200);font-weight:600}
+/* PROOF */
+.proofband{background:rgba(255,255,255,.012);border-block:1px solid var(--line)}
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,26px)}
+.pf{position:relative;padding:30px 28px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);overflow:hidden}
+.pf::before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;background:var(--metallic);transform:scaleX(0);transform-origin:left;transition:transform .8s var(--e-out)}
+.pf.in::before{transform:scaleX(1)}
+.pf .num{font-size:clamp(30px,4.4vw,52px);font-weight:800;letter-spacing:-.04em;line-height:1;white-space:nowrap;background:var(--metallic-soft);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.pf .lab{margin-top:12px;color:var(--text-muted);font-size:14px;line-height:1.5}
+.proof-note{text-align:center;margin-top:26px;font-size:12px;color:var(--text-dim)}
+/* FINAL */
+.final{position:relative;overflow:hidden;border-radius:var(--r-xl);border:1px solid var(--line-blue);padding:clamp(40px,6vw,72px) var(--gutter);text-align:center;background:linear-gradient(160deg,rgba(20,32,52,.8),rgba(8,9,13,.85))}
+.final-in{position:relative;z-index:3;max-width:680px;margin-inline:auto}
+.final h2{font-size:clamp(26px,4vw,42px);letter-spacing:-.03em;margin-bottom:18px}
+.final p{color:var(--text-soft);font-size:16px;margin-bottom:30px}
+.final .micro{margin-top:20px;font-size:13px;color:var(--text-dim)}
+/* FOOTER */
+.footer{border-top:1px solid var(--line);padding-block:56px 34px;margin-top:clamp(56px,8vw,100px)}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:40px;margin-bottom:42px}
+.foot-brand p{color:var(--text-muted);font-size:14px;max-width:32ch;margin-top:14px}
+.foot-col h5{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px}
+.foot-col a{display:block;padding:6px 0;color:var(--text-muted);font-size:14px;transition:color .25s}.foot-col a:hover{color:var(--text)}
+.foot-bottom{display:flex;align-items:center;justify-content:space-between;gap:18px;padding-top:24px;border-top:1px solid var(--line);flex-wrap:wrap}
+.foot-bottom p,.foot-bottom .legal a{font-size:13px;color:var(--text-dim)}
+.foot-bottom .legal{display:flex;gap:20px}
+[data-reveal]{opacity:0;transform:translateY(24px);transition:opacity .7s var(--e-out),transform .7s var(--e-out)}
+[data-reveal].in{opacity:1;transform:none}
+[data-reveal][data-delay="1"]{transition-delay:.08s}[data-reveal][data-delay="2"]{transition-delay:.16s}[data-reveal][data-delay="3"]{transition-delay:.24s}
+@media(max-width:880px){.nav-links,.nav-right .btn{display:none}.burger{display:flex}.chal-grid{grid-template-columns:1fr}.uc-grid{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr 1fr}.foot-brand{grid-column:1/-1}}
+@media(max-width:620px){.proof-grid{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}.btn-lg{width:100%}}
+@media(prefers-reduced-motion:reduce){[data-reveal]{opacity:1;transform:none}}
+</style>
 </head>
 <body>
-    <!-- Full-page ambient gradient background -->
-    <canvas class="ambient-canvas" id="ambientCanvas"></canvas>
 
-    <div class="dropdown-overlay" id="dropdownOverlay"></div>
-
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="container">
-            <div class="nav-content">
-                <a href="../index.html" class="logo">AVATON</a>
-                <ul class="nav-links">
-                    <li class="nav-dropdown" id="solutionsDropdown">
-                        <a href="javascript:void(0)" onclick="toggleDropdown(event)">Solutions</a>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-columns">
-                                <div class="dropdown-column">
-                                    <h4>What We Do</h4>
-                                    <a href="../solutions/agentic-enterprise-transformation.html">Agentic Enterprise Transformation</a>
-                                    <a href="../solutions/pre-built-ai-agents.html">Pre-Built AI Agents</a>
-                                    <a href="../solutions/ai-operations-governance.html">AI Operations & Governance</a>
-                                    <a href="../solutions/data-modernization.html">Data Modernization for AI</a>
-                                </div>
-                                <div class="dropdown-column">
-                                    <h4>Industries</h4>
-                                    <a href="financial-services.html">Financial Services</a>
-                                    <a href="manufacturing.html">Manufacturing</a>
-                                    <a href="retail.html">Retail & CPG</a>
-                                    <a href="logistics.html">Logistics & Transportation</a>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li><a href="../approach/index.html">Approach</a></li>
-                    <li><a href="../index.html#case-studies">Case Studies</a></li>
-                    <li><a href="../index.html#insights">Insights</a></li>
-                    <li><a href="../index.html#about">About</a></li>
-                    <li><a href="../index.html#contact">Contact</a></li>
-                </ul>
-                <button class="cta-nav" onclick="window.location.href='../index.html#contact'">Get Started</button>
-                <!-- Mobile Menu Toggle -->
-                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
-                    <span></span>
-                </button>
-            </div>
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="wrap">
+    <a href="../index.html" class="brand" style="margin-left:0"><span class="dot"></span>AVATON</a>
+    <ul class="nav-links">
+      <li class="has-mega">
+        <button class="nav-trigger" aria-haspopup="true">Industries
+          <svg class="nav-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="mega">
+          <a href="financial-services.html"><strong>Financial Services</strong><span>Onboarding, risk &amp; back-office</span></a>
+          <a href="manufacturing.html"><strong>Manufacturing</strong><span>Digital factory, robotics, quality</span></a>
+          <a href="retail.html"><strong>Retail &amp; CPG</strong><span>Commerce, merchandising, fulfilment</span></a>
+          <a href="logistics.html"><strong>Logistics &amp; Transport</strong><span>Visibility, routing, inventory</span></a>
+          <a href="energy.html"><strong>Energy</strong><span>Grid &amp; asset optimisation, trading</span></a>
+          <a href="public-sector.html"><strong>Public Sector</strong><span>Citizen services, sovereign</span></a>
+          <a href="agriculture.html"><strong>Agriculture</strong><span>ESG, yield &amp; supply chain</span></a>
+          <a href="insurance.html"><strong>Insurance</strong><span>Underwriting, claims, policies</span></a>
         </div>
-    </nav>
-
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <ul class="mobile-menu-links">
-            <li class="mobile-dropdown" id="mobileSolutionsDropdown">
-                <a href="javascript:void(0)" class="mobile-dropdown-toggle" onclick="toggleMobileDropdown('mobileSolutionsDropdown')">Solutions</a>
-                <div class="mobile-dropdown-menu">
-                    <div class="mobile-dropdown-label">What We Do</div>
-                    <a href="../solutions/agentic-enterprise-transformation.html" onclick="closeMobileMenu()">Agentic Enterprise Transformation</a>
-                    <a href="../solutions/pre-built-ai-agents.html" onclick="closeMobileMenu()">Pre-Built AI Agents</a>
-                    <a href="../solutions/ai-operations-governance.html" onclick="closeMobileMenu()">AI Operations & Governance</a>
-                    <a href="../solutions/data-modernization.html" onclick="closeMobileMenu()">Data Modernization for AI</a>
-                    <div class="mobile-dropdown-label">Industries</div>
-                    <a href="financial-services.html" onclick="closeMobileMenu()">Financial Services</a>
-                    <a href="manufacturing.html" onclick="closeMobileMenu()">Manufacturing</a>
-                    <a href="retail.html" onclick="closeMobileMenu()">Retail & CPG</a>
-                    <a href="logistics.html" onclick="closeMobileMenu()">Logistics & Transportation</a>
-                </div>
-            </li>
-            <li><a href="../approach/index.html" onclick="closeMobileMenu()">Approach</a></li>
-            <li><a href="../index.html#case-studies" onclick="closeMobileMenu()">Case Studies</a></li>
-            <li><a href="../index.html#insights" onclick="closeMobileMenu()">Insights</a></li>
-            <li><a href="../index.html#about" onclick="closeMobileMenu()">About</a></li>
-        </ul>
-        <div class="mobile-menu-cta">
-            <a href="../index.html#contact" class="btn-primary" onclick="closeMobileMenu()">Get Started</a>
-        </div>
+      </li>
+      <li><a href="../index.html#solutions">What we do</a></li>
+      <li><a href="../index.html#approach">Approach</a></li>
+      <li><a href="../blog.html">Blog</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://calendar.app.google/KM5x5BvyPZCXzASa6" target="_blank" rel="noopener" class="btn btn-primary">Get in touch
+        <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
+  </div>
+</nav>
+<div class="drawer" id="drawer">
+  <div class="mlabel">Industries</div>
+  <a href="financial-services.html">Financial Services</a>
+  <a href="manufacturing.html">Manufacturing</a>
+  <a href="retail.html">Retail &amp; CPG</a>
+  <a href="logistics.html">Logistics &amp; Transport</a>
+  <a href="energy.html">Energy</a>
+  <a href="public-sector.html">Public Sector</a>
+  <a href="agriculture.html">Agriculture</a>
+  <a href="insurance.html">Insurance</a>
+  <div class="mlabel">More</div>
+  <a href="../index.html#solutions">What we do</a>
+  <a href="../index.html#approach">Approach</a>
+  <a href="../blog.html">Blog</a>
+  <a href="https://calendar.app.google/KM5x5BvyPZCXzASa6" target="_blank" rel="noopener" class="btn btn-primary">Get in touch</a>
+</div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="section-label">Manufacturing & Industry 4.0</div>
-                <h1>Connect Shop Floor<br>to <span class="highlight">Top Floor</span>.<br>Intelligently.</h1>
-                <p class="hero-subtitle">Deploy intelligent agents that optimize production planning, automate quality control, and coordinate supply chains—with seamless SAP integration built in.</p>
-                <a href="../index.html#contact" class="btn-primary">Discuss Your Use Case →</a>
-            </div>
-        </div>
-    </section>
+<!-- HERO -->
+<header class="subhero">
+  <div class="subhero-bg" style="background-image:url(images/manufacturing-hero.jpg)" aria-hidden="true"></div>
+  <div class="wrap subhero-inner">
+    <div class="crumb" data-reveal><a href="../index.html#industries">Industries</a> / Manufacturing</div>
+    <h1 data-reveal data-delay="1">Build, test and run the factory <span class="grad">before you touch the floor</span></h1>
+    <p class="lead" data-reveal data-delay="2">We turn factory scans, machine data and shop-floor knowledge into faster planning, automated quality and self-improving operations, under European data rules.</p>
+    <div data-reveal data-delay="3">
+      <a href="https://calendar.app.google/KM5x5BvyPZCXzASa6" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Get in touch
+        <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
 
-    <!-- Challenges Section -->
-    <section class="challenges-section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-label">Industry Challenges</div>
-                <h2 class="section-title">Why Manufacturing Needs Agentic AI</h2>
-                <p class="section-subtitle">Legacy systems, supply chain volatility, and quality demands require intelligence that scales beyond human capacity.</p>
-            </div>
+<!-- CHALLENGES -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="eyebrow">The challenges</span>
+      <h2 class="h2">Why factory AI projects stall</h2>
+    </div>
+    <div class="chal-grid">
+      <div class="chal" data-reveal><div class="chal-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></svg></div><h4>Data trapped in silos</h4><p>Production data is <b>scattered across MES, PLM, SAP and the shop floor</b>, so no single system can reason about the whole operation.</p></div>
+      <div class="chal" data-reveal data-delay="1"><div class="chal-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div><h4>Inspection cannot keep pace</h4><p>Manual quality checks <b>cannot keep up with line speed</b>, so defects slip through and only samples ever get inspected.</p></div>
+      <div class="chal" data-reveal data-delay="2"><div class="chal-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3.2M12 18.3v3.2M4.5 6.5l2.3 2.3M17.2 15.2l2.3 2.3M2.5 12h3.2M18.3 12h3.2M4.5 17.5l2.3-2.3M17.2 8.8l2.3-2.3"/></svg></div><h4>Slow to plan and reprogram</h4><p>Digital twins and robot reprogramming <b>take weeks of specialist effort</b>, so every layout change or new task is a project.</p></div>
+    </div>
+  </div>
+</section>
 
-            <div class="challenges-grid">
-                <div class="challenge-card">
-                    <div class="challenge-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                            <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                        </svg>
-                    </div>
-                    <h3>Disconnected Systems</h3>
-                    <p>Data trapped in SAP, MES, PLM, and shop floor systems creates blind spots that slow decisions and mask inefficiencies.</p>
-                </div>
+<!-- USE CASES -->
+<section class="section" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="eyebrow">What we deploy</span>
+      <h2 class="h2">Agents for <span class="grad">manufacturing</span></h2>
+      <p class="lead">Concrete agents, deployed and governed, mapped to the work that matters on the factory floor.</p>
+    </div>
+    <div class="uc-grid">
 
-                <div class="challenge-card">
-                    <div class="challenge-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="9" y1="15" x2="15" y2="15"></line>
-                        </svg>
-                    </div>
-                    <h3>Quality Control at Scale</h3>
-                    <p>Manual inspection can't keep pace with production volumes, leading to defects reaching customers and costly recalls.</p>
-                </div>
+      <article class="uc" data-reveal>
+        <div class="uc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></div>
+        <h3>Digital factory simulation</h3>
+        <p>A crew of agents turns real factory scans and blueprints into a complete, navigable 3D twin, then tests layout and flow variants against safety and throughput before anything moves on the floor.</p>
+        <div class="out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg><span><b>A new factory layout in minutes, not weeks</b>.</span></div>
+      </article>
 
-                <div class="challenge-card">
-                    <div class="challenge-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                        </svg>
-                    </div>
-                    <h3>Supply Chain Volatility</h3>
-                    <p>Disruptions, demand swings, and supplier issues require faster response than traditional planning cycles allow.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+      <article class="uc" data-reveal data-delay="1">
+        <div class="uc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M12 9V5M9 5h6M9 14h.01M15 14h.01"/></svg></div>
+        <h3>Self-teaching robotics</h3>
+        <p>The agent teaches a robot arm new handling and picking skills and writes and runs the control code itself, so a fresh task no longer means weeks of manual programming.</p>
+        <div class="out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg><span><b>Robots learn new tasks with effectively zero lines of code</b>.</span></div>
+      </article>
 
-    <!-- Use Cases Section -->
-    <section class="use-cases-section">
-        <div class="container">
-            <div class="section-header">
-                <div class="section-label">Use Cases</div>
-                <h2 class="section-title">Agentic AI in Action</h2>
-                <p class="section-subtitle">Proven solutions delivering measurable results for manufacturers across Europe.</p>
-            </div>
+      <article class="uc" data-reveal>
+        <div class="uc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M8.5 11l2 2 3.5-3.5"/></svg></div>
+        <h3>Quality inspection</h3>
+        <p>Vision agents check every part on the line in real time, flag defects with high precision and route them for action, rather than relying on spot checks of a few samples.</p>
+        <div class="out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg><span><b>100% of parts inspected on the line</b>, not just samples.</span></div>
+      </article>
 
-            <div class="use-cases-grid">
-                <div class="use-case-card">
-                    <h3>Intelligent Production Planning</h3>
-                    <p>Agents that continuously optimize schedules based on real-time machine status, material availability, and customer priorities—automatically adjusting when conditions change.</p>
-                    <div class="use-case-metrics">
-                        <div class="metric">
-                            <span class="metric-value">23%</span>
-                            <span class="metric-label">Throughput increase</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-value">40%</span>
-                            <span class="metric-label">Fewer expedites</span>
-                        </div>
-                    </div>
-                </div>
+      <article class="uc" data-reveal data-delay="1">
+        <div class="uc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12h4l2 6 4-12 2 6h6"/></svg></div>
+        <h3>Predictive maintenance</h3>
+        <p>Agents watch machine and sensor data for early signs of wear, predict failures before they happen and schedule maintenance around production, so equipment is fixed before it stops the line.</p>
+        <div class="out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg><span><b>Less unplanned downtime</b> and longer asset life.</span></div>
+      </article>
 
-                <div class="use-case-card">
-                    <h3>Automated Quality Inspection</h3>
-                    <p>Vision-powered agents that inspect 100% of production, detect defects humans miss, trace root causes, and trigger corrective actions before problems scale.</p>
-                    <div class="use-case-metrics">
-                        <div class="metric">
-                            <span class="metric-value">94%</span>
-                            <span class="metric-label">Defect detection rate</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-value">67%</span>
-                            <span class="metric-label">Reduction in scrap</span>
-                        </div>
-                    </div>
-                </div>
+      <article class="uc" data-reveal>
+        <div class="uc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></div>
+        <h3>Document processing and back-office</h3>
+        <p>Agents read blueprints, work instructions and supplier paperwork, extract the rules and data hidden inside and turn orders, invoices and quality records into validated structured data across systems.</p>
+        <div class="out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg><span><b>Shop-floor knowledge becomes searchable and reusable</b>, with no manual data entry.</span></div>
+      </article>
+      <article class="uc" data-reveal data-delay="2">
+        <div class="uc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+        <h3>Supply and demand planning</h3>
+        <p>Aligns production plans with live demand, supplier and inventory signals, so the plant builds what is needed and flags shortages before they stop the line.</p>
+        <div class="out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 6L9 17l-5-5"/></svg><span><b>Fewer stoppages and less excess stock</b>, with plans that adjust to reality.</span></div>
+      </article>
 
-                <div class="use-case-card">
-                    <h3>Predictive Maintenance</h3>
-                    <p>Multi-agent systems that monitor equipment health, predict failures before they occur, schedule maintenance during planned downtime, and order parts automatically.</p>
-                    <div class="use-case-metrics">
-                        <div class="metric">
-                            <span class="metric-value">45%</span>
-                            <span class="metric-label">Less unplanned downtime</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-value">30%</span>
-                            <span class="metric-label">Lower maintenance costs</span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="use-case-card">
-                    <h3>Supply Chain Orchestration</h3>
-                    <p>Intelligent agents that monitor supplier performance, anticipate disruptions, optimize inventory levels, and automatically rebalance when conditions change.</p>
-                    <div class="use-case-metrics">
-                        <div class="metric">
-                            <span class="metric-value">35%</span>
-                            <span class="metric-label">Inventory reduction</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-value">98.5%</span>
-                            <span class="metric-label">On-time delivery</span>
-                        </div>
-                    </div>
-                </div>
+    </div>
+  </div>
+</section>
 
-                <div class="use-case-card">
-                    <h3>Intelligent Order Processing</h3>
-                    <p>Agents that handle customer orders from receipt through delivery—validating configurations, checking availability, promising delivery dates, and coordinating production.</p>
-                    <div class="use-case-metrics">
-                        <div class="metric">
-                            <span class="metric-value">85%</span>
-                            <span class="metric-label">Straight-through processing</span>
-                        </div>
-                        <div class="metric">
-                            <span class="metric-value">4 hrs → 15 min</span>
-                            <span class="metric-label">Quote turnaround</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- PROOF -->
+<section class="section proofband">
+  <div class="wrap">
+    <div class="sec-head center" data-reveal>
+      <span class="eyebrow center">What's possible</span>
+      <h2 class="h2">What agentic AI makes possible in manufacturing</h2>
+    </div>
+    <div class="proof-grid">
+      <div class="pf in" data-reveal><div class="num">minutes</div><div class="lab">to plan a new factory layout, not weeks</div></div>
+      <div class="pf" data-reveal data-delay="1"><div class="num" data-count="100" data-suffix="%">100%</div><div class="lab">of parts inspected on the line, not samples</div></div>
+      <div class="pf in" data-reveal data-delay="2"><div class="num">1.5M+</div><div class="lab">synthetic images to train vision agents</div></div>
+    </div>
+  </div>
+</section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Modernize Your Manufacturing Operations?</h2>
-                <p>Schedule a discovery call to explore how Agentic AI can optimize your production, quality, and supply chain—with seamless SAP integration.</p>
-                <a href="../index.html#contact" class="btn-primary">Schedule Discovery Call →</a>
-            </div>
-        </div>
-    </section>
+<!-- FINAL CTA -->
+<section class="section" id="contact" style="padding-top:0">
+  <div class="wrap">
+    <div class="final" data-reveal>
+      <div class="final-in">
+        <span class="eyebrow center">Let's talk</span>
+        <h2 style="margin-top:16px">Find out where agentic AI creates measurable value across your operations</h2>
+        <p>In a focused session we map your highest-impact workflows and outline a realistic, compliant path to production.</p>
+        <a href="https://calendar.app.google/KM5x5BvyPZCXzASa6" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Get in touch
+          <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <p class="micro">No pitch. Just a clear assessment of what's possible.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3>AVATON</h3>
-                    <p>Building the Agentic Enterprise for Europe</p>
-                    <p style="font-size: 0.9rem;"><strong>Google Cloud Partner</strong><br>Specializing in Vertex AI & Gemini Enterprise</p>
-                </div>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="../index.html" class="brand"><span class="dot"></span>AVATON</a>
+        <p>Agentic AI for European enterprises. Google Cloud Partner.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Industries</h5>
+        <a href="financial-services.html">Financial Services</a>
+        <a href="manufacturing.html">Manufacturing</a>
+        <a href="retail.html">Retail &amp; CPG</a>
+        <a href="logistics.html">Logistics &amp; Transport</a>
+        <a href="energy.html">Energy</a>
+        <a href="public-sector.html">Public Sector</a>
+        <a href="agriculture.html">Agriculture</a>
+        <a href="insurance.html">Insurance</a>
+      </div>
+      <div class="foot-col">
+        <h5>Company</h5>
+        <a href="../index.html#solutions">What we do</a>
+        <a href="../index.html#approach">Approach</a>
+        <a href="../blog.html">Blog</a>
+      </div>
+      <div class="foot-col">
+        <h5>Contact</h5>
+        <a href="mailto:hello@avaton.ai">hello@avaton.ai</a>
+        <a href="https://calendar.app.google/KM5x5BvyPZCXzASa6" target="_blank" rel="noopener">Get in touch</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>&copy; <span id="year">2026</span> AVATON. All rights reserved.</p>
+      <div class="legal"><a href="../impressum.html">Impressum</a><a href="../datenschutz.html">Datenschutz</a></div>
+    </div>
+  </div>
+</footer>
 
-                <div class="footer-column">
-                    <h4>Solutions</h4>
-                    <ul>
-                        <li><a href="../solutions/agentic-enterprise-transformation.html">Agentic Enterprise</a></li>
-                        <li><a href="../solutions/pre-built-ai-agents.html">Pre-Built Agents</a></li>
-                        <li><a href="../solutions/ai-operations-governance.html">GenOps Platform</a></li>
-                        <li><a href="../solutions/data-modernization.html">Data Modernization</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Industries</h4>
-                    <ul>
-                        <li><a href="financial-services.html">Financial Services</a></li>
-                        <li><a href="manufacturing.html">Manufacturing</a></li>
-                        <li><a href="retail.html">Retail & CPG</a></li>
-                        <li><a href="logistics.html">Logistics</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Contact</h4>
-                    <ul>
-                        <li><a href="mailto:hello@avaton.ai">hello@avaton.ai</a></li>
-                        <li>Hohenbrunn, Bavaria</li>
-                        <li>Germany</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2026 AVATON. All rights reserved.</p>
-                <div>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#" style="margin: 0 1rem;">Impressum</a>
-                    <a href="#">Cookie Settings</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        function toggleDropdown(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            const dropdown = document.getElementById('solutionsDropdown');
-            const overlay = document.getElementById('dropdownOverlay');
-
-            if (dropdown.classList.contains('active')) {
-                closeDropdown();
-            } else {
-                dropdown.classList.add('active');
-                overlay.classList.add('active');
-            }
-        }
-
-        function closeDropdown() {
-            const dropdown = document.getElementById('solutionsDropdown');
-            const overlay = document.getElementById('dropdownOverlay');
-            dropdown.classList.remove('active');
-            overlay.classList.remove('active');
-        }
-
-        document.getElementById('dropdownOverlay').addEventListener('click', closeDropdown);
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeDropdown();
-            }
-        });
-
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // ================================================
-        // Ambient Caustic Light Effect
-        // ================================================
-        const canvas = document.getElementById('ambientCanvas');
-        const ctx = canvas.getContext('2d');
-
-        let width, height;
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        resize();
-        window.addEventListener('resize', resize);
-
-        function noise(x, y, t) {
-            const n1 = Math.sin(x * 0.01 + t * 0.0003) * Math.cos(y * 0.012 + t * 0.0002);
-            const n2 = Math.sin(x * 0.008 - t * 0.0002) * Math.cos(y * 0.009 + t * 0.00025);
-            const n3 = Math.sin((x + y) * 0.006 + t * 0.00015);
-            return (n1 + n2 + n3) / 3;
-        }
-
-        const lights = [
-            { x: 0.3, y: 0.25, intensity: 0.55, radius: 0.5, speedX: 0.00002, speedY: 0.000015, phase: 0 },
-            { x: 0.7, y: 0.35, intensity: 0.4, radius: 0.4, speedX: -0.000015, speedY: 0.00002, phase: 2 },
-            { x: 0.5, y: 0.6, intensity: 0.3, radius: 0.45, speedX: 0.000018, speedY: -0.000012, phase: 4 }
-        ];
-
-        let time = 0;
-
-        function render() {
-            time++;
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, width, height);
-
-            const imageData = ctx.createImageData(width, height);
-            const data = imageData.data;
-            const step = 3;
-
-            for (let y = 0; y < height; y += step) {
-                for (let x = 0; x < width; x += step) {
-                    let totalLight = 0;
-
-                    for (const light of lights) {
-                        const noiseVal = noise(x, y, time + light.phase * 1000);
-                        const lightX = (light.x + Math.sin(time * light.speedX * 50 + light.phase) * 0.15 + noiseVal * 0.05) * width;
-                        const lightY = (light.y + Math.cos(time * light.speedY * 50 + light.phase) * 0.1 + noiseVal * 0.03) * height;
-
-                        const dx = x - lightX;
-                        const dy = y - lightY;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        const maxDist = light.radius * Math.max(width, height);
-
-                        if (dist < maxDist) {
-                            const falloff = 1 - (dist / maxDist);
-                            const caustic = 1 + noise(x * 2, y * 2, time * 0.5) * 0.4;
-                            totalLight += falloff * falloff * light.intensity * caustic;
-                        }
-                    }
-
-                    totalLight = Math.min(totalLight, 1);
-                    const r = Math.floor(totalLight * 45);
-                    const g = Math.floor(totalLight * 85);
-                    const b = Math.floor(totalLight * 140);
-
-                    for (let sy = 0; sy < step && y + sy < height; sy++) {
-                        for (let sx = 0; sx < step && x + sx < width; sx++) {
-                            const idx = ((y + sy) * width + (x + sx)) * 4;
-                            data[idx] = r;
-                            data[idx + 1] = g;
-                            data[idx + 2] = b;
-                            data[idx + 3] = 255;
-                        }
-                    }
-                }
-            }
-
-            ctx.putImageData(imageData, 0, 0);
-            ctx.filter = 'blur(40px)';
-            ctx.drawImage(canvas, 0, 0);
-            ctx.filter = 'none';
-
-            requestAnimationFrame(render);
-        }
-
-        render();
-
-        // ================================================
-        // Mobile Menu
-        // ================================================
-        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-
-        if (mobileMenuToggle && mobileMenu && mobileMenuOverlay) {
-            mobileMenuToggle.addEventListener('click', function() {
-                this.classList.toggle('active');
-                mobileMenu.classList.toggle('active');
-                mobileMenuOverlay.classList.toggle('active');
-                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
-            });
-
-            mobileMenuOverlay.addEventListener('click', closeMobileMenu);
-
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
-                    closeMobileMenu();
-                }
-            });
-        }
-
-        function closeMobileMenu() {
-            if (mobileMenuToggle) mobileMenuToggle.classList.remove('active');
-            if (mobileMenu) mobileMenu.classList.remove('active');
-            if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function toggleMobileDropdown(id) {
-            const dropdown = document.getElementById(id);
-            if (dropdown) {
-                dropdown.classList.toggle('active');
-            }
-        }
-    </script>
+<script>
+(function(){
+  "use strict";
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var canHover=window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  var nav=document.getElementById('nav');
+  var onScroll=function(){nav.classList.toggle('scrolled',window.scrollY>12);};
+  onScroll();window.addEventListener('scroll',onScroll,{passive:true});
+  document.querySelectorAll('.has-mega .nav-trigger').forEach(function(btn){
+    btn.addEventListener('click',function(e){if(canHover)return;e.preventDefault();var li=btn.closest('.has-mega');li.classList.toggle('open');});
+  });
+  var burger=document.getElementById('burger'),drawer=document.getElementById('drawer');
+  burger.addEventListener('click',function(){var o=drawer.classList.toggle('open');burger.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';});
+  drawer.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){drawer.classList.remove('open');burger.classList.remove('open');document.body.style.overflow='';});});
+  var reveals=document.querySelectorAll('[data-reveal]');
+  if('IntersectionObserver' in window && !reduce){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target);}});},{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+    reveals.forEach(function(el){io.observe(el);});
+  }else{reveals.forEach(function(el){el.classList.add('in');});}
+  function animate(el){var t=parseFloat(el.getAttribute('data-count'));var s=el.getAttribute('data-suffix')||'';if(reduce){el.textContent=t+s;return;}var d=1300,st=null;function tick(n){if(!st)st=n;var p=Math.min((n-st)/d,1);el.textContent=Math.round(t*(1-Math.pow(1-p,3)))+s;if(p<1)requestAnimationFrame(tick);else el.textContent=t+s;}requestAnimationFrame(tick);}
+  var pcs=document.querySelectorAll('[data-count]');
+  if('IntersectionObserver' in window && !reduce){
+    pcs.forEach(function(el){el.textContent='0'+(el.getAttribute('data-suffix')||'');});
+    var io2=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){en.target.closest('.pf').classList.add('in');animate(en.target);io2.unobserve(en.target);}});},{threshold:0.6});
+    pcs.forEach(function(el){io2.observe(el);});
+  }
+  document.getElementById('year').textContent=new Date().getFullYear();
+})();
+</script>
 </body>
 </html>
