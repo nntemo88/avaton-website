@@ -10,6 +10,7 @@
 <meta property="og:title" content="AVATON | Agentic AI for European Enterprises" />
 <meta property="og:description" content="AI agents that do real work in production. Sovereign and EU-compliant, built on Google Cloud." />
 <meta property="og:url" content="https://avaton.ai/" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Cdefs%3E%3ClinearGradient%20id='g'%20x1='0'%20y1='0'%20x2='1'%20y2='1'%3E%3Cstop%20offset='0'%20stop-color='%237bb8ff'/%3E%3Cstop%20offset='1'%20stop-color='%233a7cc7'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width='32'%20height='32'%20rx='8'%20fill='%23050507'/%3E%3Ccircle%20cx='16'%20cy='16'%20r='7'%20fill='url(%23g)'/%3E%3C/svg%3E" />
 <link rel="stylesheet" href="css/fonts.css" />
 <style>
 :root{
@@ -116,7 +117,7 @@ h1,h2,h3,h4{line-height:1.08;font-weight:700;letter-spacing:-.02em}
 .stat{position:relative;padding:32px 22px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);overflow:hidden;text-align:center}
 .stat::before{content:"";position:absolute;left:0;top:0;width:100%;height:2px;background:var(--metallic);transform:scaleX(0);transform-origin:left;transition:transform .8s var(--e-out)}
 .stat.in::before{transform:scaleX(1)}
-.stat .num{font-size:clamp(20px,4.2vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1;white-space:nowrap;background:var(--metallic-soft);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat .num{font-size:clamp(20px,4.2vw,44px);font-weight:800;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;background:var(--metallic-soft);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .stat .lab{margin-top:14px;color:var(--text-muted);font-size:15px;text-wrap:balance}
 /* INDUSTRIES */
 .ind-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
@@ -159,27 +160,34 @@ h1,h2,h3,h4{line-height:1.08;font-weight:700;letter-spacing:-.02em}
 .wcard .out{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:20px}
 .wcard .out b{color:var(--blue-200);font-weight:600}
 .wcard .link-arrow{margin-top:auto}
-/* PHASES */
-.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.phase{position:relative;padding:30px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line)}
-.phase:hover{border-color:var(--line-blue)}
-.phase .ph-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:16px}
-.phase .pnum{font-size:46px;font-weight:800;letter-spacing:-.04em;line-height:1;background:var(--metallic-soft);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.phase .pweek{font-family:var(--mono);font-size:12px;color:var(--blue-300);padding:5px 12px;border:1px solid var(--line-blue);border-radius:var(--r-pill)}
-.phase .dotline{height:2px;background:var(--line);position:relative;margin-bottom:20px;border-radius:2px;overflow:hidden}
-.phase .dotline::after{content:"";position:absolute;inset:0;width:0;background:var(--metallic);transition:width 1s var(--e-out)}
-.phase.in .dotline::after{width:var(--fill,40%)}
-.phase h3{font-size:20px;margin-bottom:10px}
-.phase>p{color:var(--text-soft);font-size:14.5px;margin-bottom:18px}
+/* APPROACH - horizontal timeline */
+.timeline{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.tstep{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center}
+.tstep:not(:last-child)::after{content:"";position:absolute;left:calc(50% + 26px);top:25px;width:calc(100% - 22px);height:2px;background:linear-gradient(90deg,var(--line-blue),var(--line));z-index:0}
+.tstep .tnode{position:relative;z-index:1;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--ink-850);border:1px solid var(--line-blue);margin-bottom:22px}
+.tstep .tnode span{font-size:19px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;background:var(--metallic-soft);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.tstep .pweek{font-family:var(--mono);font-size:12px;color:var(--blue-300);padding:5px 12px;border:1px solid var(--line-blue);border-radius:var(--r-pill);margin-bottom:16px}
+.tstep h3{font-size:20px;margin-bottom:10px;letter-spacing:-.01em}
+.tstep>p{color:var(--text-soft);font-size:14.5px;margin-bottom:18px;max-width:32ch}
+.tstep .plist{width:max-content;max-width:100%;margin-inline:auto;text-align:left}
 .plist li{display:flex;gap:11px;padding:7px 0;font-size:14px;color:var(--text-soft);border-top:1px solid var(--line)}
 .plist li:first-child{border-top:none}
 .plist .ck{color:var(--blue-300);flex-shrink:0;margin-top:3px}.plist .ck svg{width:15px;height:15px}
+@media(max-width:760px){
+  .timeline{grid-template-columns:1fr;gap:0}
+  .tstep{align-items:flex-start;text-align:left;padding-left:78px;padding-bottom:36px}
+  .tstep:last-child{padding-bottom:0}
+  .tstep>p{max-width:none}
+  .tstep .plist{width:auto;margin-inline:0}
+  .tstep .tnode{position:absolute;left:0;top:0;margin-bottom:0}
+  .tstep:not(:last-child)::after{left:25px;top:52px;width:2px;height:calc(100% - 52px);background:linear-gradient(180deg,var(--line-blue),var(--line))}
+}
 /* CASE */
 .case{position:relative;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--line-blue);background:linear-gradient(160deg,rgba(20,30,46,.7),rgba(8,9,13,.7))}
 .case-inner{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(28px,4vw,56px);padding:clamp(30px,5vw,56px);align-items:stretch}
 .case-metrics{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:16px;align-self:stretch}
 .cm{padding:22px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
-.cm .num{font-size:clamp(26px,3.6vw,42px);font-weight:800;letter-spacing:-.03em;white-space:nowrap;background:var(--metallic-soft);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+.cm .num{font-size:clamp(26px,3.6vw,42px);font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;white-space:nowrap;background:var(--metallic-soft);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
 .cm .lab{margin-top:8px;font-size:13px;color:var(--text-muted);line-height:1.4}
 .case-body{display:flex;flex-direction:column;justify-content:center}
 .case-body .tagline{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue-300);margin-bottom:14px}
@@ -374,7 +382,7 @@ h1,h2,h3,h4{line-height:1.08;font-weight:700;letter-spacing:-.02em}
         <h3>Agentic Enterprise Transformation</h3>
         <div class="plabel">Business problem</div>
         <p class="prob">Your AI initiatives stall at proof-of-concept while competitors deploy.</p>
-        <p class="out"><b>Outcome:</b> a roadmap to your highest-value workflows, a production-ready architecture and agents live within 90 days.</p>
+        <p class="out"><b>Outcome:</b> a roadmap to your highest-value workflows, a production-ready architecture and agents live within 6 weeks.</p>
         <a href="#book" class="link-arrow">Learn more <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </article>
       <article class="wcard" data-reveal data-delay="1">
@@ -402,40 +410,40 @@ h1,h2,h3,h4{line-height:1.08;font-weight:700;letter-spacing:-.02em}
   <div class="wrap">
     <div class="sec-head center" data-reveal>
       <span class="eyebrow center">How it works</span>
-      <h2 class="h2">From idea to production in <span class="grad">90&nbsp;days</span></h2>
+      <h2 class="h2">From idea to production in <span class="grad">6&nbsp;weeks</span></h2>
       <p class="lead" style="margin-inline:auto">One structured path. No 18-month science projects, no pilots that never graduate.</p>
     </div>
-    <div class="phases">
-      <article class="phase" data-reveal style="--fill:33%">
-        <div class="ph-top"><span class="pnum">01</span><span class="pweek">Weeks 1&ndash;2</span></div>
-        <div class="dotline"></div>
+    <div class="timeline" data-reveal>
+      <div class="tstep">
+        <div class="tnode"><span>01</span></div>
+        <span class="pweek">Weeks 1&ndash;2</span>
         <h3>Identify the opportunity</h3>
         <p>We work backwards from a measurable business outcome, with a clear business case before any agent is built.</p>
         <ul class="plist">
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>Workflow mapping and ROI targets</li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>Use-case prioritisation by value</li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></span>Workflow mapping and ROI targets</li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></span>Use-case prioritisation by value</li>
         </ul>
-      </article>
-      <article class="phase" data-reveal data-delay="1" style="--fill:66%">
-        <div class="ph-top"><span class="pnum">02</span><span class="pweek">Weeks 3&ndash;6</span></div>
-        <div class="dotline"></div>
+      </div>
+      <div class="tstep">
+        <div class="tnode"><span>02</span></div>
+        <span class="pweek">Weeks 3&ndash;4</span>
         <h3>Prove value fast</h3>
         <p>A working agent on your real data in weeks. Measurable results you can validate internally, not slideware.</p>
         <ul class="plist">
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>Pre-built agent frameworks</li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>Integration with your real systems</li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></span>Pre-built agent frameworks</li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></span>Integration with your real systems</li>
         </ul>
-      </article>
-      <article class="phase" data-reveal data-delay="2" style="--fill:100%">
-        <div class="ph-top"><span class="pnum">03</span><span class="pweek">Weeks 7&ndash;12</span></div>
-        <div class="dotline"></div>
+      </div>
+      <div class="tstep">
+        <div class="tnode"><span>03</span></div>
+        <span class="pweek">Weeks 5&ndash;6</span>
         <h3>Go live and govern</h3>
-        <p>Production deployment with enterprise security, plus continuous governance that keeps every agent compliant and in budget.</p>
+        <p>Production deployment with enterprise security and governance that keeps agents compliant and in budget.</p>
         <ul class="plist">
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>ERP / CRM and core-system integration</li>
-          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg></span>Monitoring, governance and DSGVO</li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></span>ERP / CRM and core-system integration</li>
+          <li><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></span>Monitoring, governance and DSGVO</li>
         </ul>
-      </article>
+      </div>
     </div>
   </div>
 </section>
