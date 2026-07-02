@@ -25,3 +25,5 @@ preview-agent-options.html
 
 # Local design sandbox — taste-skill redesign experiments, never deploy
 index_taste_skill.html
+# og:image build source (only the generated og-image.png deploys)
+og-image.html
